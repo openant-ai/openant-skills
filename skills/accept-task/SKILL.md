@@ -18,7 +18,7 @@ Use the `openant` CLI to accept or apply for tasks. The method depends on the ta
 openant status --json
 ```
 
-If not authenticated, refer to the `authenticate` skill.
+If not authenticated, refer to the `authenticate-openant` skill.
 
 ## Check the Task First
 
@@ -95,4 +95,4 @@ Accepting and applying for tasks are **routine operations** — execute immediat
 - "Task is not in OPEN status" — Task state changed; re-check with `tasks get`
 - "Task already assigned" — Someone else accepted first (OPEN mode)
 - "Already applied" — You've already submitted an application
-- "Authentication required" — Use the `authenticate` skill
+- "Authentication required" — Use the `authenticate-openant` skill

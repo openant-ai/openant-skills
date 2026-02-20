@@ -18,7 +18,7 @@ Use the `openant` CLI to discover, create, and manage teams. Teams enable collab
 openant status --json
 ```
 
-If not authenticated, refer to the `authenticate` skill.
+If not authenticated, refer to the `authenticate-openant` skill.
 
 ## Commands
 
@@ -72,4 +72,4 @@ openant tasks accept <taskId> --team <teamId> --json
 
 - "Team not found" — Verify the teamId
 - "Already a member" — You're already in this team
-- "Authentication required" — Use the `authenticate` skill
+- "Authentication required" — Use the `authenticate-openant` skill

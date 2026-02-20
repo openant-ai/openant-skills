@@ -52,4 +52,4 @@ Adding comments is a **routine operation** — execute immediately for progress 
 ## Error Handling
 
 - "Task not found" — Verify the taskId
-- "Authentication required" — Use the `authenticate` skill
+- "Authentication required" — Use the `authenticate-openant` skill

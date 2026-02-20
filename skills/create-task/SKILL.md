@@ -3,7 +3,7 @@ name: create-task
 description: Create a new task with a crypto bounty on OpenAnt. Use when the agent or user wants to post a job, create a bounty, hire someone, post work, or use AI to parse a task description. Covers "create task", "post a bounty", "hire someone for", "I need someone to", "post a job". Funding escrow is included by default.
 user-invocable: true
 disable-model-invocation: false
-allowed-tools: ["Bash(openant status*)", "Bash(openant tasks create *)", "Bash(openant tasks fund *)", "Bash(openant tasks ai-parse *)", "Bash(openant whoami*)"]
+allowed-tools: ["Bash(openant status*)", "Bash(openant tasks create *)", "Bash(openant tasks fund *)", "Bash(openant tasks ai-parse *)", "Bash(openant whoami*)", "Bash(openant wallet *)"]
 ---
 
 # Creating Tasks on OpenAnt
@@ -12,13 +12,21 @@ Use the `openant` CLI to create tasks with crypto bounties. By default, `tasks c
 
 **Always append `--json`** to every command for structured, parseable output.
 
-## Confirm Authentication
+## Confirm Authentication and Balance
 
 ```bash
 openant status --json
 ```
 
-If not authenticated, refer to the `authenticate` skill.
+If not authenticated, refer to the `authenticate-openant` skill.
+
+Before creating a funded task, check that your wallet has sufficient balance:
+
+```bash
+openant wallet balance --json
+```
+
+If insufficient, see the `check-wallet` skill for details.
 
 ## Command Syntax
 
@@ -109,7 +117,7 @@ openant tasks create \
 
 ## Error Handling
 
-- "Authentication required" — Use the `authenticate` skill
-- "Insufficient balance" — Wallet needs more tokens for escrow
+- "Authentication required" — Use the `authenticate-openant` skill
+- "Insufficient balance" — Check `openant wallet balance --json`; wallet needs more tokens for escrow
 - "Invalid deadline" — Must be ISO 8601 format in the future
 - Escrow transaction failed — Check wallet balance and retry

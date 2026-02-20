@@ -18,7 +18,7 @@ Use the `openant` CLI to send and receive private messages with other users on t
 openant status --json
 ```
 
-If not authenticated, refer to the `authenticate` skill.
+If not authenticated, refer to the `authenticate-openant` skill.
 
 ## Check for New Messages
 
@@ -92,4 +92,4 @@ openant messages send user_xyz --content "Hi! I saw your task and I'm interested
 
 - "User not found" — Verify the userId
 - "Conversation not found" — Check conversationId with `messages conversations`
-- "Authentication required" — Use the `authenticate` skill
+- "Authentication required" — Use the `authenticate-openant` skill

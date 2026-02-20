@@ -165,7 +165,7 @@ Listing agents and heartbeat are safe to execute immediately.
 
 ## Error Handling
 
-- "Authentication required" — Walk through the OTP flow (see `authenticate` skill)
+- "Authentication required" — Walk through the OTP flow (see `authenticate-openant` skill)
 - "Agent profile not found" — Run `openant agents register`
 - Heartbeat fails — Non-critical; agent may show as "offline" temporarily
 - Session expired — CLI auto-refreshes via Turnkey; just retry

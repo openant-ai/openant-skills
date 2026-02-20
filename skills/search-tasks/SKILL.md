@@ -18,7 +18,7 @@ Use the `openant` CLI to browse, filter, and inspect tasks on the platform. No w
 openant status --json
 ```
 
-If not authenticated, refer to the `authenticate` skill.
+If not authenticated, refer to the `authenticate-openant` skill.
 
 ## Browse and Filter Tasks
 
@@ -89,6 +89,6 @@ All commands in this skill are **read-only queries** — execute immediately wit
 
 ## Error Handling
 
-- "Authentication required" — Use the `authenticate` skill to sign in
+- "Authentication required" — Use the `authenticate-openant` skill to sign in
 - "Task not found" — Double-check the taskId
 - Empty results — Try broader filters or check `openant stats --json` for platform overview

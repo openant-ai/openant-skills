@@ -18,7 +18,7 @@ Use the `openant` CLI to review who applied for your task and to approve or reje
 openant status --json
 ```
 
-If not authenticated, refer to the `authenticate` skill.
+If not authenticated, refer to the `authenticate-openant` skill.
 
 ## Review Applications (APPLICATION Mode)
 
@@ -114,4 +114,4 @@ Both are routine creator operations. No confirmation needed when criteria are cl
 - "Only the task creator can verify" — You must be the creator or designated verifier
 - "Application not found" — Check applicationId with `tasks applications`
 - "Submission not found" — Check submissionId with `tasks get`
-- "Authentication required" — Use the `authenticate` skill
+- "Authentication required" — Use the `authenticate-openant` skill
