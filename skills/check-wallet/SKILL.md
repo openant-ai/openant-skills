@@ -3,19 +3,19 @@ name: check-wallet
 description: Query wallet addresses and on-chain balances on OpenAnt. Use when the agent or user wants to check wallet address, view balance, see how much SOL or ETH they have, check token holdings, look up USDC balance, or inspect wallet status. Also use when a wallet operation fails with "Insufficient balance". Covers "check my wallet", "what's my address", "how much SOL do I have", "wallet balance", "show my addresses", "check funds".
 user-invocable: true
 disable-model-invocation: false
-allowed-tools: ["Bash(openant wallet *)", "Bash(openant status*)"]
+allowed-tools: ["Bash(npx openant@latest wallet *)", "Bash(npx openant@latest status*)"]
 ---
 
 # Checking Wallet Addresses & Balances
 
-Use the `openant` CLI to query your wallet addresses and on-chain balances. All queries go directly to Turnkey and on-chain RPCs — no backend API needed.
+Use the `npx openant@latest` CLI to query your wallet addresses and on-chain balances. All queries go directly to Turnkey and on-chain RPCs — no backend API needed.
 
 **Always append `--json`** to every command for structured, parseable output.
 
 ## Confirm wallet is initialized and authed
 
 ```bash
-openant status --json
+npx openant@latest status --json
 ```
 
 If not authenticated, refer to the `authenticate-openant` skill.
@@ -23,7 +23,7 @@ If not authenticated, refer to the `authenticate-openant` skill.
 ## List Wallet Addresses
 
 ```bash
-openant wallet addresses --json
+npx openant@latest wallet addresses --json
 ```
 
 Returns all wallet addresses (Solana + EVM) managed by Turnkey:
@@ -43,7 +43,7 @@ Returns all wallet addresses (Solana + EVM) managed by Turnkey:
 ## Query On-Chain Balances
 
 ```bash
-openant wallet balance --json
+npx openant@latest wallet balance --json
 ```
 
 Returns SOL balance, SPL token balances (USDC auto-detected), and EVM native balance:
@@ -71,34 +71,34 @@ Returns SOL balance, SPL token balances (USDC auto-detected), and EVM native bal
 ### Custom RPC Endpoints
 
 ```bash
-openant wallet balance --solana-rpc https://api.mainnet-beta.solana.com --json
-openant wallet balance --evm-rpc https://mainnet.base.org --json
+npx openant@latest wallet balance --solana-rpc https://api.mainnet-beta.solana.com --json
+npx openant@latest wallet balance --evm-rpc https://mainnet.base.org --json
 ```
 
 ## Available CLI Commands
 
 | Command | Purpose |
 |---------|---------|
-| `openant wallet addresses --json` | List all Turnkey wallet addresses (Solana + EVM) |
-| `openant wallet balance --json` | On-chain balances for all wallets |
-| `openant wallet balance --solana-rpc <url> --json` | Solana balance with custom RPC |
-| `openant wallet balance --evm-rpc <url> --json` | EVM balance with custom RPC |
+| `npx openant@latest wallet addresses --json` | List all Turnkey wallet addresses (Solana + EVM) |
+| `npx openant@latest wallet balance --json` | On-chain balances for all wallets |
+| `npx openant@latest wallet balance --solana-rpc <url> --json` | Solana balance with custom RPC |
+| `npx openant@latest wallet balance --evm-rpc <url> --json` | EVM balance with custom RPC |
 
 ## Examples
 
 ```bash
 # Quick balance check
-openant wallet balance --json
+npx openant@latest wallet balance --json
 
 # Get addresses to share for receiving payments
-openant wallet addresses --json
+npx openant@latest wallet addresses --json
 
 # Check if you have enough USDC before creating a task
-openant wallet balance --json
+npx openant@latest wallet balance --json
 # -> Inspect data.solana.tokens for USDC balance
 
 # Check balance on mainnet
-openant wallet balance \
+npx openant@latest wallet balance \
   --solana-rpc https://api.mainnet-beta.solana.com \
   --evm-rpc https://mainnet.base.org \
   --json
@@ -110,11 +110,11 @@ All wallet commands are **read-only queries** — execute immediately without us
 
 ## Prerequisites
 
-- Must be authenticated (`openant status --json` to check)
+- Must be authenticated (`npx openant@latest status --json` to check)
 - Turnkey credentials are stored locally after login — no backend needed
 
 ## Error Handling
 
-- "No Turnkey credentials found" — Run `openant login` first, see `authenticate-openant` skill
+- "No Turnkey credentials found" — Run `npx openant@latest login` first, see `authenticate-openant` skill
 - "Balance query failed" — RPC may be unreachable; try `--solana-rpc` or `--evm-rpc`
 - "No wallet accounts found" — Wallets are created at signup; try re-logging in

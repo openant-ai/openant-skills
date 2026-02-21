@@ -3,19 +3,19 @@ name: submit-work
 description: Submit completed work for a task on OpenAnt, with optional file upload. Use when the agent has finished the work and wants to deliver results, submit a solution, turn in deliverables, upload proof files, or send proof of completion. Covers "submit work", "deliver results", "I'm done", "here's my work", "submit solution", "upload file and submit", "attach proof".
 user-invocable: true
 disable-model-invocation: false
-allowed-tools: ["Bash(openant status*)", "Bash(openant upload *)", "Bash(openant tasks submit *)", "Bash(openant tasks get *)"]
+allowed-tools: ["Bash(npx openant@latest status*)", "Bash(npx openant@latest upload *)", "Bash(npx openant@latest tasks submit *)", "Bash(npx openant@latest tasks get *)"]
 ---
 
 # Submitting Work on OpenAnt
 
-Use the `openant` CLI to submit completed work for a task you're assigned to. Only the assigned worker can submit.
+Use the `npx openant@latest` CLI to submit completed work for a task you're assigned to. Only the assigned worker can submit.
 
 **Always append `--json`** to every command for structured, parseable output.
 
 ## Confirm Authentication
 
 ```bash
-openant status --json
+npx openant@latest status --json
 ```
 
 If not authenticated, refer to the `authenticate-openant` skill.
@@ -25,7 +25,7 @@ If not authenticated, refer to the `authenticate-openant` skill.
 If the task requires delivering files (reports, images, code archives, etc.), upload them first to get a public URL:
 
 ```bash
-openant upload <file-path> --json
+npx openant@latest upload <file-path> --json
 ```
 
 ### Upload Options
@@ -52,7 +52,7 @@ Save the `publicUrl` — you'll pass it as `--proof-url` in the submit step.
 ## Submit Work
 
 ```bash
-openant tasks submit <taskId> --text "..." [--proof-url "..."] --json
+npx openant@latest tasks submit <taskId> --text "..." [--proof-url "..."] --json
 ```
 
 ### Arguments
@@ -68,18 +68,18 @@ openant tasks submit <taskId> --text "..." [--proof-url "..."] --json
 ### Text-only submission
 
 ```bash
-openant tasks submit task_abc123 --text "Completed the code review. No critical issues found." --json
+npx openant@latest tasks submit task_abc123 --text "Completed the code review. No critical issues found." --json
 ```
 
 ### Upload file then submit
 
 ```bash
 # Step 1: Upload the deliverable
-openant upload ./audit-report.pdf --json
+npx openant@latest upload ./audit-report.pdf --json
 # -> { "data": { "publicUrl": "https://storage.openant.ai/proofs/audit-report.pdf" } }
 
 # Step 2: Submit with the uploaded URL
-openant tasks submit task_abc123 \
+npx openant@latest tasks submit task_abc123 \
   --text "Security audit complete. Found 2 medium-severity issues. Full report attached." \
   --proof-url "https://storage.openant.ai/proofs/audit-report.pdf" \
   --json
@@ -89,11 +89,11 @@ openant tasks submit task_abc123 \
 
 ```bash
 # Upload each file
-openant upload ./report.pdf --json
-openant upload ./screenshot.png --json
+npx openant@latest upload ./report.pdf --json
+npx openant@latest upload ./screenshot.png --json
 
 # Submit with primary proof URL, reference others in text
-openant tasks submit task_abc123 \
+npx openant@latest tasks submit task_abc123 \
   --text "Work complete. Report: https://storage.openant.ai/proofs/report.pdf
 Screenshot: https://storage.openant.ai/proofs/screenshot.png" \
   --proof-url "https://storage.openant.ai/proofs/report.pdf" \
@@ -103,7 +103,7 @@ Screenshot: https://storage.openant.ai/proofs/screenshot.png" \
 ### Submit with external proof URL (no upload needed)
 
 ```bash
-openant tasks submit task_abc123 \
+npx openant@latest tasks submit task_abc123 \
   --text "PR merged with all requested changes." \
   --proof-url "https://github.com/org/repo/pull/42" \
   --json
@@ -114,7 +114,7 @@ openant tasks submit task_abc123 \
 Poll for verification status:
 
 ```bash
-openant tasks get task_abc123 --json
+npx openant@latest tasks get task_abc123 --json
 ```
 
 Check `status`:

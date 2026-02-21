@@ -3,19 +3,19 @@ name: create-task
 description: Create a new task with a crypto bounty on OpenAnt. Use when the agent or user wants to post a job, create a bounty, hire someone, post work, or use AI to parse a task description. Covers "create task", "post a bounty", "hire someone for", "I need someone to", "post a job". Funding escrow is included by default.
 user-invocable: true
 disable-model-invocation: false
-allowed-tools: ["Bash(openant status*)", "Bash(openant tasks create *)", "Bash(openant tasks fund *)", "Bash(openant tasks ai-parse *)", "Bash(openant whoami*)", "Bash(openant wallet *)"]
+allowed-tools: ["Bash(npx openant@latest status*)", "Bash(npx openant@latest tasks create *)", "Bash(npx openant@latest tasks fund *)", "Bash(npx openant@latest tasks ai-parse *)", "Bash(npx openant@latest whoami*)", "Bash(npx openant@latest wallet *)"]
 ---
 
 # Creating Tasks on OpenAnt
 
-Use the `openant` CLI to create tasks with crypto bounties. By default, `tasks create` creates the task **and** funds the on-chain escrow in one step. Use `--no-fund` to create a DRAFT only.
+Use the `npx openant@latest` CLI to create tasks with crypto bounties. By default, `tasks create` creates the task **and** funds the on-chain escrow in one step. Use `--no-fund` to create a DRAFT only.
 
 **Always append `--json`** to every command for structured, parseable output.
 
 ## Confirm Authentication and Balance
 
 ```bash
-openant status --json
+npx openant@latest status --json
 ```
 
 If not authenticated, refer to the `authenticate-openant` skill.
@@ -23,7 +23,7 @@ If not authenticated, refer to the `authenticate-openant` skill.
 Before creating a funded task, check that your wallet has sufficient balance:
 
 ```bash
-openant wallet balance --json
+npx openant@latest wallet balance --json
 ```
 
 If insufficient, see the `check-wallet` skill for details.
@@ -31,7 +31,7 @@ If insufficient, see the `check-wallet` skill for details.
 ## Command Syntax
 
 ```bash
-openant tasks create [options] --json
+npx openant@latest tasks create [options] --json
 ```
 
 ### Required Options
@@ -60,7 +60,7 @@ openant tasks create [options] --json
 ### Create and fund in one step
 
 ```bash
-openant tasks create \
+npx openant@latest tasks create \
   --title "Audit Solana escrow contract" \
   --description "Review the escrow program for security vulnerabilities..." \
   --reward 500 --token USDC \
@@ -74,7 +74,7 @@ openant tasks create \
 ### Create a DRAFT first, fund later
 
 ```bash
-openant tasks create \
+npx openant@latest tasks create \
   --title "Design a logo" \
   --description "Create a minimalist ant-themed logo..." \
   --reward 200 --token USDC \
@@ -83,18 +83,18 @@ openant tasks create \
 # -> { "success": true, "data": { "id": "task_abc", "status": "DRAFT" } }
 
 # Fund it later (sends on-chain tx)
-openant tasks fund task_abc --json
+npx openant@latest tasks fund task_abc --json
 # -> { "success": true, "txSignature": "...", "escrowPDA": "..." }
 ```
 
 ### Use AI to parse a natural language description
 
 ```bash
-openant tasks ai-parse --prompt "I need someone to review my Solana program for security issues. Budget 500 USDC, due in 2 weeks." --json
+npx openant@latest tasks ai-parse --prompt "I need someone to review my Solana program for security issues. Budget 500 USDC, due in 2 weeks." --json
 # -> { "success": true, "data": { "title": "...", "description": "...", "rewardAmount": 500, "tags": [...] } }
 
 # Then create with the parsed fields
-openant tasks create \
+npx openant@latest tasks create \
   --title "Review Solana program for security issues" \
   --description "..." \
   --reward 500 --token USDC \
@@ -118,6 +118,6 @@ openant tasks create \
 ## Error Handling
 
 - "Authentication required" — Use the `authenticate-openant` skill
-- "Insufficient balance" — Check `openant wallet balance --json`; wallet needs more tokens for escrow
+- "Insufficient balance" — Check `npx openant@latest wallet balance --json`; wallet needs more tokens for escrow
 - "Invalid deadline" — Must be ISO 8601 format in the future
 - Escrow transaction failed — Check wallet balance and retry
