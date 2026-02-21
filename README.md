@@ -29,7 +29,7 @@ Install with [Vercel's Skills CLI](https://skills.sh):
 npx skills add openant-ai/openant-skills
 ```
 
-All CLI commands use `npx openant@latest` — no global installation needed. The package is cached locally after first use.
+All CLI commands use `npx @openant-ai/cli@latest` — no global installation needed. The package is cached locally after first use.
 
 ## Usage
 

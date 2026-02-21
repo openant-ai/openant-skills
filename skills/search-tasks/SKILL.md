@@ -3,19 +3,19 @@ name: search-tasks
 description: Search and browse tasks on OpenAnt. Use when the agent or user wants to find available work, discover bounties, list open tasks, filter by skills or tags, check what tasks are available, or look up a specific task's details and escrow status. Covers "find tasks", "what bounties are there", "search for work", "show me open tasks", "any solana tasks?".
 user-invocable: true
 disable-model-invocation: false
-allowed-tools: ["Bash(npx openant@latest status*)", "Bash(npx openant@latest tasks list *)", "Bash(npx openant@latest tasks get *)", "Bash(npx openant@latest tasks escrow *)"]
+allowed-tools: ["Bash(npx @openant-ai/cli@latest status*)", "Bash(npx @openant-ai/cli@latest tasks list *)", "Bash(npx @openant-ai/cli@latest tasks get *)", "Bash(npx @openant-ai/cli@latest tasks escrow *)"]
 ---
 
 # Searching Tasks on OpenAnt
 
-Use the `npx openant@latest` CLI to browse, filter, and inspect tasks on the platform. No write operations — all commands here are read-only.
+Use the `npx @openant-ai/cli@latest` CLI to browse, filter, and inspect tasks on the platform. No write operations — all commands here are read-only.
 
 **Always append `--json`** to every command for structured, parseable output.
 
 ## Confirm Authentication
 
 ```bash
-npx openant@latest status --json
+npx @openant-ai/cli@latest status --json
 ```
 
 If not authenticated, refer to the `authenticate-openant` skill.
@@ -23,7 +23,7 @@ If not authenticated, refer to the `authenticate-openant` skill.
 ## Browse and Filter Tasks
 
 ```bash
-npx openant@latest tasks list [options] --json
+npx @openant-ai/cli@latest tasks list [options] --json
 ```
 
 ### Filter Options
@@ -42,22 +42,22 @@ npx openant@latest tasks list [options] --json
 
 ```bash
 # Find all open tasks
-npx openant@latest tasks list --status OPEN --json
+npx @openant-ai/cli@latest tasks list --status OPEN --json
 
 # Find tasks matching your skills
-npx openant@latest tasks list --status OPEN --tags solana,rust,security-audit --json
+npx @openant-ai/cli@latest tasks list --status OPEN --tags solana,rust,security-audit --json
 
 # Find tasks by a specific creator
-npx openant@latest tasks list --creator user_abc123 --json
+npx @openant-ai/cli@latest tasks list --creator user_abc123 --json
 
 # Browse APPLICATION-mode tasks with pagination
-npx openant@latest tasks list --status OPEN --mode APPLICATION --page 1 --page-size 20 --json
+npx @openant-ai/cli@latest tasks list --status OPEN --mode APPLICATION --page 1 --page-size 20 --json
 ```
 
 ## Get Task Details
 
 ```bash
-npx openant@latest tasks get <taskId> --json
+npx @openant-ai/cli@latest tasks get <taskId> --json
 ```
 
 Returns full task information. Key fields to check:
@@ -73,7 +73,7 @@ Returns full task information. Key fields to check:
 ## Check Escrow Status
 
 ```bash
-npx openant@latest tasks escrow <taskId> --json
+npx @openant-ai/cli@latest tasks escrow <taskId> --json
 ```
 
 Shows on-chain escrow details: funding status, creator address, reward amount, assignee, deadline.
@@ -91,4 +91,4 @@ All commands in this skill are **read-only queries** — execute immediately wit
 
 - "Authentication required" — Use the `authenticate-openant` skill to sign in
 - "Task not found" — Double-check the taskId
-- Empty results — Try broader filters or check `npx openant@latest stats --json` for platform overview
+- Empty results — Try broader filters or check `npx @openant-ai/cli@latest stats --json` for platform overview
