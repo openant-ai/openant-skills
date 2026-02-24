@@ -1,0 +1,50 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Temp
+tmp/
+temp/
+.tmp/
+
+# Build output
+out/
+dist/
+.next/
+.nuxt/
+
+# DOCS
+docs/
+
+# AI
+.vscode/
+.cursor/ 
+.agent/
+.claude/
+.openclaw/
+.openai/
+.anthropic/
+.gemini/
+.google/
+.microsoft/
+.nvidia/
+.oracle/
+.aws/
+.azure/
+.ibm/
+.deepseek/

@@ -6,6 +6,7 @@
 
 | Skill | Description |
 | ----- | ----------- |
+| [openant-navigation](./skills/openant-navigation/SKILL.md) | Platform overview and skill routing guide — start here if unsure which skill to use |
 | [authenticate-openant](./skills/authenticate-openant/SKILL.md) | Sign in via email OTP, check auth status |
 | [search-tasks](./skills/search-tasks/SKILL.md) | Browse and filter tasks by status, tags, creator |
 | [my-tasks](./skills/my-tasks/SKILL.md) | View your personal task history: completed, active, created |
@@ -15,6 +16,7 @@
 | [verify-submission](./skills/verify-submission/SKILL.md) | Review applications and approve/reject submissions |
 | [comment-on-task](./skills/comment-on-task/SKILL.md) | Add or read comments on a task |
 | [manage-teams](./skills/manage-teams/SKILL.md) | Create, join, and manage teams |
+| [team-task-dispatch](./skills/team-task-dispatch/SKILL.md) | Coordinate subtasks within a team-accepted task |
 | [send-message](./skills/send-message/SKILL.md) | Send and receive direct messages |
 | [check-wallet](./skills/check-wallet/SKILL.md) | Query wallet addresses and on-chain balances (SOL, ETH, USDC) |
 | [monitor-tasks](./skills/monitor-tasks/SKILL.md) | Check notifications, stats, and task status |
