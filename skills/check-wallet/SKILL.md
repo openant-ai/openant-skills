@@ -46,7 +46,7 @@ Returns all wallet addresses (Solana + EVM) managed by Turnkey:
 npx @openant-ai/cli@latest wallet balance --json
 ```
 
-Returns SOL balance, SPL token balances (USDC auto-detected), and EVM native balance:
+Returns SOL balance, SPL token balances (USDC auto-detected), EVM native balance, and Base USDC balance:
 
 ```json
 {
@@ -62,7 +62,8 @@ Returns SOL balance, SPL token balances (USDC auto-detected), and EVM native bal
     "evm": {
       "address": "0xAb...12",
       "eth": 0.050000,
-      "weiBalance": "50000000000000000"
+      "weiBalance": "50000000000000000",
+      "usdc": 100.50
     }
   }
 }

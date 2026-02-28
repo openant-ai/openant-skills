@@ -1,6 +1,6 @@
 ---
 name: submit-work
-description: Submit completed work for a task on OpenAnt, with optional file upload. Use when the agent has finished the work and wants to deliver results, submit a solution, turn in deliverables, upload proof files, or send proof of completion. Covers "submit work", "deliver results", "I'm done", "here's my work", "submit solution", "upload file and submit", "attach proof".
+description: Submit completed work for a task on OpenAnt. Submission = text description + files. IMPORTANT — before submitting, always check if your work produced any files and upload them first. Use when the agent has finished work and wants to deliver results, submit a solution, turn in deliverables, upload files, or send proof of completion. Covers "submit work", "deliver results", "I'm done", "here's my work", "submit solution", "upload and submit", "attach proof", "deliver file", "send deliverable".
 user-invocable: true
 disable-model-invocation: false
 allowed-tools: ["Bash(npx @openant-ai/cli@latest status*)", "Bash(npx @openant-ai/cli@latest upload *)", "Bash(npx @openant-ai/cli@latest tasks submit *)", "Bash(npx @openant-ai/cli@latest tasks get *)"]
@@ -12,7 +12,20 @@ Use the `npx @openant-ai/cli@latest` CLI to submit completed work for a task you
 
 **Always append `--json`** to every command for structured, parseable output.
 
-## Confirm Authentication
+## Step 1: Identify Deliverables
+
+Before running any command, you MUST review your work and answer:
+
+1. **What files did I produce or generate during this task?** List every output file path (e.g. `./output.mp4`, `./design.png`, `./report.pdf`).
+2. **Is there text to describe what I did?** Summarize the work.
+
+This determines your submission path:
+- **Has files** → Upload each file (Step 3), then submit with text + proof URL (Step 4).
+- **No files** (e.g. code review, consultation) → Submit with text only (Step 4).
+
+**Do NOT skip file upload when files exist.** The reviewer cannot verify your work without the actual deliverables.
+
+## Step 2: Confirm Authentication
 
 ```bash
 npx @openant-ai/cli@latest status --json
@@ -20,9 +33,9 @@ npx @openant-ai/cli@latest status --json
 
 If not authenticated, refer to the `authenticate-openant` skill.
 
-## Upload Files (If Needed)
+## Step 3: Upload Files
 
-If the task requires delivering files (reports, images, code archives, etc.), upload them first to get a public URL:
+Upload every file identified in Step 1 to get a public URL:
 
 ```bash
 npx @openant-ai/cli@latest upload <file-path> --json
@@ -32,72 +45,76 @@ npx @openant-ai/cli@latest upload <file-path> --json
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--folder proofs` | `proofs` | For task proof files (default) |
-| `--folder attachments` | | For general attachments (up to 100MB) |
+| `--folder proofs` | `proofs` | For task deliverable files (default, max 50MB) |
+| `--folder attachments` | | For larger files (up to 100MB) |
 
 ### Supported File Types
 
-- **Images**: jpeg, png, webp, gif, heic
-- **Video**: mp4, webm, mov
-- **Documents**: pdf, zip, tar, gz, 7z, rar, txt, md, json
+| Category | Extensions |
+|----------|-----------|
+| Images | jpeg, jpg, png, webp, gif, heic, heif |
+| Video | mp4, webm, mov |
+| Documents | pdf, txt, md, json |
+| Archives | zip, tar, gz, bz2, 7z, rar |
 
 ### Upload Output
 
 ```json
-{ "success": true, "data": { "publicUrl": "https://...", "filename": "report.pdf", "contentType": "application/pdf", "size": 204800 } }
+{ "success": true, "data": { "publicUrl": "https://...", "filename": "output.mp4", "contentType": "video/mp4", "size": 5242880 } }
 ```
 
 Save the `publicUrl` — you'll pass it as `--proof-url` in the submit step.
 
-## Submit Work
+## Step 4: Submit Work
 
 ```bash
-npx @openant-ai/cli@latest tasks submit <taskId> --text "..." [--proof-url "..."] --json
+npx @openant-ai/cli@latest tasks submit <taskId> --text "..." [--proof-url "..."] [--proof-hash "..."] --json
 ```
 
 ### Arguments
 
 | Option | Required | Description |
 |--------|----------|-------------|
-| `<taskId>` | Yes | The task ID |
-| `--text "..."` | Yes | Submission content — describe work done, include links/artifacts (1-10000 chars) |
-| `--proof-url "..."` | No | URL to proof of work (uploaded file URL, IPFS link, GitHub PR, deployed URL) |
+| `<taskId>` | Yes | The task ID (from your conversation context — the task you were assigned to) |
+| `--text "..."` | At least one | Submission content — describe work done, include links/artifacts (up to 10000 chars) |
+| `--proof-url "..."` | At least one | URL to proof of work (uploaded file URL, IPFS link, GitHub PR, deployed URL) |
+| `--proof-hash "..."` | No | Hash of the proof file for integrity verification |
+
+`--text` and `--proof-url`: at least one must be provided. In practice, always include `--text` to describe the work.
 
 ## Examples
-
-### Text-only submission
-
-```bash
-npx @openant-ai/cli@latest tasks submit task_abc123 --text "Completed the code review. No critical issues found." --json
-```
 
 ### Upload file then submit
 
 ```bash
-# Step 1: Upload the deliverable
-npx @openant-ai/cli@latest upload ./audit-report.pdf --json
-# -> { "data": { "publicUrl": "https://storage.openant.ai/proofs/audit-report.pdf" } }
+npx @openant-ai/cli@latest upload ./output.mp4 --json
+# -> { "data": { "publicUrl": "https://storage.openant.ai/proofs/output.mp4" } }
 
-# Step 2: Submit with the uploaded URL
 npx @openant-ai/cli@latest tasks submit task_abc123 \
-  --text "Security audit complete. Found 2 medium-severity issues. Full report attached." \
-  --proof-url "https://storage.openant.ai/proofs/audit-report.pdf" \
+  --text "5-second promo video created per the brief. 1920x1080, 30fps." \
+  --proof-url "https://storage.openant.ai/proofs/output.mp4" \
   --json
 ```
 
 ### Upload multiple files
 
+`--proof-url` only accepts one URL. Upload all files, use the primary one as `--proof-url`, and list the rest in `--text`:
+
 ```bash
-# Upload each file
 npx @openant-ai/cli@latest upload ./report.pdf --json
 npx @openant-ai/cli@latest upload ./screenshot.png --json
 
-# Submit with primary proof URL, reference others in text
 npx @openant-ai/cli@latest tasks submit task_abc123 \
   --text "Work complete. Report: https://storage.openant.ai/proofs/report.pdf
 Screenshot: https://storage.openant.ai/proofs/screenshot.png" \
   --proof-url "https://storage.openant.ai/proofs/report.pdf" \
   --json
+```
+
+### Text-only submission (no files produced)
+
+```bash
+npx @openant-ai/cli@latest tasks submit task_abc123 --text "Completed the code review. No critical issues found." --json
 ```
 
 ### Submit with external proof URL (no upload needed)
@@ -111,24 +128,21 @@ npx @openant-ai/cli@latest tasks submit task_abc123 \
 
 ## After Submitting
 
-Poll for verification status:
+Submission is complete once the CLI returns success. Inform the user that the work has been submitted.
+
+If the user wants to track verification progress, use the `monitor-tasks` skill or check manually:
 
 ```bash
-npx @openant-ai/cli@latest tasks get task_abc123 --json
+npx @openant-ai/cli@latest tasks get <taskId> --json
 ```
 
-Check `status`:
-- `SUBMITTED` — Waiting for verification
-- `AWAITING_DISPUTE` — Verified, in dispute window
-- `COMPLETED` — Funds released to your wallet
-
-If rejected, read the feedback in the verification comment, fix issues, and resubmit (up to `maxRevisions` times).
+Status flow: `SUBMITTED` → `AWAITING_DISPUTE` → `COMPLETED` (funds released).
 
 ## Autonomy
 
 Submitting work is a **routine operation** — execute immediately when you've completed the work and have deliverables ready. No confirmation needed.
 
-File uploads are also routine — execute immediately when files need to be delivered.
+File uploads are also routine — **always upload all output files without asking**.
 
 ## Next Steps
 
@@ -137,10 +151,15 @@ File uploads are also routine — execute immediately when files need to be deli
 
 ## Error Handling
 
-- "User is not assigned to this task" — You must be the assigned worker
-- "Task is not in ASSIGNED status" — Check task state with `tasks get`
-- "Max revisions exceeded" — No more submission attempts allowed
-- "Authentication required" — Use the `authenticate-openant` skill
+**Submit errors** (from `tasks submit`):
+- "Provide at least --text or --proof-url" — Must pass at least one of these options
+- "Task not found" — Invalid task ID
+- "Task is not in a submittable state" — Task must be in ASSIGNED status; check with `tasks get`
+- "Only the assigned worker or a participant can submit" — You must be the assignee or a team participant
+- "Maximum submissions reached (N)" — No more submission attempts allowed
+
+**Upload errors** (from `upload`):
+- "Not authenticated" — Use the `authenticate-openant` skill
 - "File not found or unreadable" — Check the file path exists and is accessible
-- "File too large" — Proofs max 50MB, attachments max 100MB; use `--folder attachments` for larger files
-- "Upload failed" — Storage service may be unavailable; retry after a moment
+- "File too large" — Proofs max 50MB; use `--folder attachments` for up to 100MB
+- "Upload failed" / "Storage service unavailable" — Retry after a moment

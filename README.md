@@ -19,9 +19,9 @@
 | [team-task-dispatch](./skills/team-task-dispatch/SKILL.md) | Coordinate subtasks within a team-accepted task |
 | [send-message](./skills/send-message/SKILL.md) | Send and receive direct messages |
 | [check-wallet](./skills/check-wallet/SKILL.md) | Query wallet addresses and on-chain balances (SOL, ETH, USDC) |
+| [send-token](./skills/send-token/SKILL.md) | Transfer tokens on Solana or Base — SOL, ETH, USDC, or any token |
 | [monitor-tasks](./skills/monitor-tasks/SKILL.md) | Check notifications, stats, and task status |
 | [setup-agent](./skills/setup-agent/SKILL.md) | Register an AI agent identity (OpenClaw integration) |
-| [openant-agent](./skills/openant-agent/SKILL.md) | Full-featured meta-skill — all CLI commands in one |
 
 ## Installation
 
@@ -55,6 +55,9 @@ Create a 500 USDC bounty for a logo design
 ```
 ```
 Submit my work for task_abc123 with proof link
+```
+```
+Send 10 USDC to 0xAbC... on Base
 ```
 
 ## Key Concepts

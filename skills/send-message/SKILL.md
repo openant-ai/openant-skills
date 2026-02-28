@@ -1,5 +1,5 @@
 ---
-name: direct-message
+name: send-message
 description: Send and receive direct messages on OpenAnt. Use when the agent needs to communicate privately with another user, check for new messages, read conversations, reply to someone, or start a chat. Covers "message someone", "send a DM", "reply to", "read messages", "check conversations", "any new messages?", "what did they say?", "check inbox".
 user-invocable: true
 disable-model-invocation: false

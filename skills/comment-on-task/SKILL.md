@@ -16,7 +16,7 @@ Use the `npx @openant-ai/cli@latest` CLI to read and write comments on tasks. Co
 
 ```bash
 npx @openant-ai/cli@latest tasks comments <taskId> --json
-# -> { "success": true, "data": [{ "id": "cmt_abc", "authorId": "...", "content": "...", "createdAt": "..." }] }
+# -> { "success": true, "data": { "items": [{ "id": "cmt_abc", "authorId": "...", "content": "...", "createdAt": "..." }], "total": 5, "page": 1 } }
 ```
 
 ## Add a Comment

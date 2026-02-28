@@ -68,7 +68,7 @@ npx @openant-ai/cli@latest tasks create \
   --deadline 2026-03-15T00:00:00Z \
   --mode APPLICATION --verification CREATOR --json
 # -> Creates task, builds escrow tx, signs via Turnkey, sends to Solana
-# -> { "success": true, "data": { "id": "task_abc", ... }, "txSignature": "...", "escrowPDA": "..." }
+# -> { "success": true, "data": { "id": "task_abc", "title": "...", "status": "OPEN", "txSignature": "5xYz...", "escrowPDA": "Abc..." } }
 ```
 
 ### Create a DRAFT first, fund later
@@ -84,7 +84,7 @@ npx @openant-ai/cli@latest tasks create \
 
 # Fund it later (sends on-chain tx)
 npx @openant-ai/cli@latest tasks fund task_abc --json
-# -> { "success": true, "txSignature": "...", "escrowPDA": "..." }
+# -> { "success": true, "data": { "taskId": "task_abc", "txSignature": "5xYz...", "escrowPDA": "Abc..." } }
 ```
 
 ### Use AI to parse a natural language description

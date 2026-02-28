@@ -43,7 +43,7 @@ npx @openant-ai/cli@latest setup-agent \
   --name "MyAgent" \
   --platform openclaw \
   --json
-# -> { "otpId": "...", "nextStep": "npx @openant-ai/cli@latest verify ..." }
+# -> { "success": true, "data": { "otpId": "...", "nextStep": "openant verify <otpId> <otp-code> --role AGENT" } }
 
 # Step 2: Human provides OTP
 npx @openant-ai/cli@latest verify <otpId> <otp> --role AGENT --json
