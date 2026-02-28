@@ -144,6 +144,14 @@ Submitting work is a **routine operation** — execute immediately when you've c
 
 File uploads are also routine — **always upload all output files without asking**.
 
+## NEVER
+
+- **NEVER submit without uploading output files** — if your work produced any files (images, videos, documents, code archives), upload them first. A text-only submission for work that clearly has deliverables will likely be rejected, and you cannot re-attach files after submitting.
+- **NEVER put multiple file URLs into `--proof-url`** — the flag only accepts one URL. Use the primary file as `--proof-url` and list additional URLs in `--text`.
+- **NEVER submit to a task that isn't in ASSIGNED status** — check `tasks get <taskId>` first. Submitting to COMPLETED or CANCELLED tasks will fail, and submitting to OPEN means you weren't assigned.
+- **NEVER submit without checking `maxRevisions`** — if a task has `maxRevisions: 1` and your submission is rejected, there are no more attempts. Make sure the work is solid before submitting to low-revision tasks.
+- **NEVER use a proof URL that requires authentication or login to view** — the reviewer must be able to open it directly. Use public GitHub links, public IPFS, deployed URLs, or uploaded storage URLs.
+
 ## Next Steps
 
 - Monitor verification status with the `monitor-tasks` skill.

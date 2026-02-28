@@ -116,6 +116,14 @@ Extract: chain, token (name or address), amount, and destination address.
 
 Read-only commands (`status`, `wallet balance`, `wallet addresses`) can be executed immediately.
 
+## NEVER
+
+- **NEVER send without the user explicitly confirming the destination address** — blockchain transfers are irreversible. Show the full address and ask the user to verify it before executing.
+- **NEVER send Solana tokens to an EVM address, or vice versa** — the chains are incompatible. Solana addresses are base58 strings (32–44 chars), EVM addresses start with `0x`. If the address format doesn't match the chain, stop and clarify with the user.
+- **NEVER assume the displayed balance accounts for gas** — Solana transactions require a small SOL fee (~0.000005 SOL); Base transactions require ETH for gas. If the user is sending their entire balance, leave a small reserve or the transaction will fail.
+- **NEVER infer the chain from the token alone** — USDC exists on both Solana and Base. Always confirm which chain the user intends before sending.
+- **NEVER send to an address the user typed casually without double-checking** — if the user typed the address in the middle of a sentence or abbreviated it, ask them to paste the full address again to confirm.
+
 ## Prerequisites
 
 - Must be authenticated (`npx @openant-ai/cli@latest status --json`)

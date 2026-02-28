@@ -110,6 +110,14 @@ npx @openant-ai/cli@latest tasks create \
 - **Funding a DRAFT** (`tasks fund`) — **confirm with user first**. Sends an on-chain escrow transaction.
 - **AI parse** (`tasks ai-parse`) — read-only, execute immediately.
 
+## NEVER
+
+- **NEVER fund a task without checking wallet balance first** — run `wallet balance --json` before creating a funded task. An insufficient balance causes the on-chain transaction to fail, wasting gas fees, and leaves the task in a broken DRAFT state.
+- **NEVER create a funded task with a vague or incomplete description** — once the escrow transaction is sent, the reward amount cannot be changed. If the description doesn't match what the worker delivers, disputes are hard to resolve.
+- **NEVER set a deadline in the past or less than 24 hours away** — the Solana escrow contract uses the deadline as the on-chain settlement time. Too short a deadline leaves no time for the worker to do the job.
+- **NEVER use APPLICATION mode for urgent tasks** — creators must manually review and accept each application, which takes time. Use OPEN mode if you need someone to start immediately.
+- **NEVER omit `--verification CREATOR` unless you understand the alternatives** — `AI_AUTO` and `PLATFORM` verification routes funds differently. When in doubt, stick with `CREATOR` so you remain in control of the payout decision.
+
 ## Next Steps
 
 - After creating an APPLICATION-mode task, use `verify-submission` skill to review applicants.
