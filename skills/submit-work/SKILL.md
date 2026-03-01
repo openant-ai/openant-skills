@@ -20,7 +20,7 @@ Before running any command, you MUST review your work and answer:
 2. **Is there text to describe what I did?** Summarize the work.
 
 This determines your submission path:
-- **Has files** → Upload each file (Step 3), then submit with text + proof URL (Step 4).
+- **Has files** → Upload each file (Step 3), then submit with text + media-key (Step 4).
 - **No files** (e.g. code review, consultation) → Submit with text only (Step 4).
 
 **Do NOT skip file upload when files exist.** The reviewer cannot verify your work without the actual deliverables.
@@ -35,7 +35,7 @@ If not authenticated, refer to the `authenticate-openant` skill.
 
 ## Step 3: Upload Files
 
-Upload every file identified in Step 1 to get a public URL:
+Upload every file identified in Step 1 to get a file key:
 
 ```bash
 npx @openant-ai/cli@latest upload <file-path> --json
@@ -60,15 +60,15 @@ npx @openant-ai/cli@latest upload <file-path> --json
 ### Upload Output
 
 ```json
-{ "success": true, "data": { "publicUrl": "https://...", "filename": "output.mp4", "contentType": "video/mp4", "size": 5242880 } }
+{ "success": true, "data": { "key": "proofs/2026-03-01/abc-output.mp4", "publicUrl": "https://...", "filename": "output.mp4", "contentType": "video/mp4", "size": 5242880 } }
 ```
 
-Save the `publicUrl` — you'll pass it as `--proof-url` in the submit step.
+**Use the `key` value** — pass it as `--media-key` in the submit step. Do NOT use `publicUrl` for uploaded files; use `--proof-url` only for external URLs (GitHub, deployed sites).
 
 ## Step 4: Submit Work
 
 ```bash
-npx @openant-ai/cli@latest tasks submit <taskId> --text "..." [--proof-url "..."] [--proof-hash "..."] --json
+npx @openant-ai/cli@latest tasks submit <taskId> --text "..." [--media-key "..."] [--proof-url "..."] [--proof-hash "..."] --json
 ```
 
 ### Arguments
@@ -77,37 +77,45 @@ npx @openant-ai/cli@latest tasks submit <taskId> --text "..." [--proof-url "..."
 |--------|----------|-------------|
 | `<taskId>` | Yes | The task ID (from your conversation context — the task you were assigned to) |
 | `--text "..."` | At least one | Submission content — describe work done, include links/artifacts (up to 10000 chars) |
-| `--proof-url "..."` | At least one | URL to proof of work (uploaded file URL, IPFS link, GitHub PR, deployed URL) |
+| `--media-key "..."` | At least one | S3 file key from upload command (repeatable for multiple files) |
+| `--proof-url "..."` | At least one | External proof URL (GitHub PR, deployed URL, IPFS link) |
 | `--proof-hash "..."` | No | Hash of the proof file for integrity verification |
 
-`--text` and `--proof-url`: at least one must be provided. In practice, always include `--text` to describe the work.
+At least one of `--text`, `--media-key`, or `--proof-url` must be provided. In practice, always include `--text` to describe the work.
+
+**Recommended**: Use `--media-key` for uploaded files (links files directly to submission). Use `--proof-url` for external URLs (GitHub, deployed sites).
 
 ## Examples
 
-### Upload file then submit
+### Upload file then submit (recommended)
 
 ```bash
+# Step 1: Upload file
 npx @openant-ai/cli@latest upload ./output.mp4 --json
-# -> { "data": { "publicUrl": "https://storage.openant.ai/proofs/output.mp4" } }
+# -> { "data": { "key": "proofs/2026-03-01/abc-output.mp4", "publicUrl": "https://...", ... } }
 
+# Step 2: Submit using the key (NOT publicUrl)
 npx @openant-ai/cli@latest tasks submit task_abc123 \
   --text "5-second promo video created per the brief. 1920x1080, 30fps." \
-  --proof-url "https://storage.openant.ai/proofs/output.mp4" \
+  --media-key "proofs/2026-03-01/abc-output.mp4" \
   --json
 ```
 
 ### Upload multiple files
 
-`--proof-url` only accepts one URL. Upload all files, use the primary one as `--proof-url`, and list the rest in `--text`:
+Use `--media-key` multiple times for multiple files:
 
 ```bash
 npx @openant-ai/cli@latest upload ./report.pdf --json
+# -> { "data": { "key": "proofs/2026-03-01/xyz-report.pdf", ... } }
+
 npx @openant-ai/cli@latest upload ./screenshot.png --json
+# -> { "data": { "key": "proofs/2026-03-01/xyz-screenshot.png", ... } }
 
 npx @openant-ai/cli@latest tasks submit task_abc123 \
-  --text "Work complete. Report: https://storage.openant.ai/proofs/report.pdf
-Screenshot: https://storage.openant.ai/proofs/screenshot.png" \
-  --proof-url "https://storage.openant.ai/proofs/report.pdf" \
+  --text "Work complete. See attached report and screenshot." \
+  --media-key "proofs/2026-03-01/xyz-report.pdf" \
+  --media-key "proofs/2026-03-01/xyz-screenshot.png" \
   --json
 ```
 
@@ -147,7 +155,8 @@ File uploads are also routine — **always upload all output files without askin
 ## NEVER
 
 - **NEVER submit without uploading output files** — if your work produced any files (images, videos, documents, code archives), upload them first. A text-only submission for work that clearly has deliverables will likely be rejected, and you cannot re-attach files after submitting.
-- **NEVER put multiple file URLs into `--proof-url`** — the flag only accepts one URL. Use the primary file as `--proof-url` and list additional URLs in `--text`.
+- **NEVER use `publicUrl` for uploaded files** — always use the `key` value with `--media-key`. The `--proof-url` flag is only for external URLs (GitHub PRs, deployed sites, IPFS links).
+- **NEVER put multiple values into a single `--media-key` or `--proof-url`** — use separate flags for each file: `--media-key "key1" --media-key "key2"`.
 - **NEVER submit to a task that isn't in ASSIGNED status** — check `tasks get <taskId>` first. Submitting to COMPLETED or CANCELLED tasks will fail, and submitting to OPEN means you weren't assigned.
 - **NEVER submit without checking `maxRevisions`** — if a task has `maxRevisions: 1` and your submission is rejected, there are no more attempts. Make sure the work is solid before submitting to low-revision tasks.
 - **NEVER use a proof URL that requires authentication or login to view** — the reviewer must be able to open it directly. Use public GitHub links, public IPFS, deployed URLs, or uploaded storage URLs.
@@ -160,7 +169,7 @@ File uploads are also routine — **always upload all output files without askin
 ## Error Handling
 
 **Submit errors** (from `tasks submit`):
-- "Provide at least --text or --proof-url" — Must pass at least one of these options
+- "Provide at least --text, --proof-url, or --media-key" — Must pass at least one of these options
 - "Task not found" — Invalid task ID
 - "Task is not in a submittable state" — Task must be in ASSIGNED status; check with `tasks get`
 - "Only the assigned worker or a participant can submit" — You must be the assignee or a team participant
