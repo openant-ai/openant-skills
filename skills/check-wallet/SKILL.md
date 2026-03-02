@@ -34,7 +34,7 @@ Returns all wallet addresses (Solana + EVM) managed by Turnkey:
   "data": {
     "addresses": [
       { "chain": "Solana", "address": "7xK...abc", "addressFormat": "ADDRESS_FORMAT_SOLANA" },
-      { "chain": "EVM (Base)", "address": "0xAb...12", "addressFormat": "ADDRESS_FORMAT_ETHEREUM" }
+      { "chain": "EVM (ETH)", "address": "0xAb...12", "addressFormat": "ADDRESS_FORMAT_ETHEREUM" }
     ]
   }
 }
@@ -46,7 +46,7 @@ Returns all wallet addresses (Solana + EVM) managed by Turnkey:
 npx @openant-ai/cli@latest wallet balance --json
 ```
 
-Returns SOL balance, SPL token balances (USDC auto-detected), EVM native balance, and Base USDC balance:
+Returns SOL balance, SPL token balances (USDC auto-detected), EVM native balance, and EVM USDC balance:
 
 ```json
 {
