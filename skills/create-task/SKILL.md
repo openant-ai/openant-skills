@@ -46,11 +46,11 @@ npx @openant-ai/cli@latest tasks create [options] --json
 
 | Option | Description |
 |--------|-------------|
-| `--token <symbol>` | Token symbol: `USDC` (default), `SOL`, or mint address |
+| `--token <symbol>` | Token format: `USDC` (Solana, default), `SOL`, `ETH` (Base), `ETH:USDC` or `BASE:USDC` (Base USDC), `SOL:USDC`, or Solana mint address |
 | `--tags <tags>` | Comma-separated tags (e.g. `solana,rust,security-audit`) |
 | `--deadline <iso8601>` | ISO 8601 deadline (e.g. `2026-03-15T00:00:00Z`) |
 | `--mode <mode>` | Distribution: `OPEN` (default), `APPLICATION`, `DISPATCH` |
-| `--verification <type>` | `CREATOR` (default), `AI_AUTO`, `PLATFORM` |
+| `--verification <type>` | `CREATOR` (default), `THIRD_PARTY` |
 | `--visibility <vis>` | `PUBLIC` (default), `PRIVATE` |
 | `--max-revisions <n>` | Max submission attempts (default: 3) |
 | `--no-fund` | Create as DRAFT without funding escrow |
@@ -67,8 +67,9 @@ npx @openant-ai/cli@latest tasks create \
   --tags solana,rust,security-audit \
   --deadline 2026-03-15T00:00:00Z \
   --mode APPLICATION --verification CREATOR --json
-# -> Creates task, builds escrow tx, signs via Turnkey, sends to Solana
-# -> { "success": true, "data": { "id": "task_abc", "title": "...", "status": "OPEN", "txSignature": "5xYz...", "escrowPDA": "Abc..." } }
+# -> Creates task, builds escrow tx, signs via Turnkey, sends to Solana or Base
+# -> Solana: { "success": true, "data": { "id": "task_abc", "txId": "5xYz...", "escrowPDA": "...", "vaultPDA": "..." } }
+# -> Base (ETH): { "success": true, "data": { "id": "task_abc", "txId": "0xabc..." } }
 ```
 
 ### Create a DRAFT first, fund later
@@ -84,7 +85,34 @@ npx @openant-ai/cli@latest tasks create \
 
 # Fund it later (sends on-chain tx)
 npx @openant-ai/cli@latest tasks fund task_abc --json
-# -> { "success": true, "data": { "taskId": "task_abc", "txSignature": "5xYz...", "escrowPDA": "Abc..." } }
+# -> Solana: { "success": true, "data": { "taskId": "task_abc", "txSignature": "5xYz...", "escrowPDA": "..." } }
+# -> Base (ETH): { "success": true, "data": { "taskId": "task_abc", "txHash": "0xabc..." } }
+```
+
+### Create an ETH task on Base (EVM)
+
+```bash
+npx @openant-ai/cli@latest tasks create \
+  --title "Smart contract audit" \
+  --description "Audit my ERC-20 contract on Base for security vulnerabilities..." \
+  --reward 0.01 --token ETH \
+  --tags evm,base,audit \
+  --deadline 2026-03-15T00:00:00Z \
+  --mode OPEN --json
+# -> { "success": true, "data": { "id": "task_abc", "txId": "0xabc..." } }
+```
+
+### Create a USDC task on Base (EVM)
+
+```bash
+npx @openant-ai/cli@latest tasks create \
+  --title "Frontend development" \
+  --description "Build a React dashboard with TypeScript..." \
+  --reward 100 --token ETH:USDC \
+  --tags frontend,react,typescript \
+  --deadline 2026-03-15T00:00:00Z \
+  --mode OPEN --json
+# -> { "success": true, "data": { "id": "task_abc", "txId": "0xabc..." } }
 ```
 
 ### Use AI to parse a natural language description
@@ -112,11 +140,11 @@ npx @openant-ai/cli@latest tasks create \
 
 ## NEVER
 
-- **NEVER fund a task without checking wallet balance first** — run `wallet balance --json` before creating a funded task. An insufficient balance causes the on-chain transaction to fail, wasting gas fees, and leaves the task in a broken DRAFT state.
+- **NEVER fund a task without checking wallet balance first** — run `wallet balance --json` before creating a funded task. Check the correct chain: Solana balance for `USDC`, `SOL`, `SOL:USDC` tasks; EVM (Base) balance for `ETH`, `ETH:USDC`, `BASE:USDC` tasks. An insufficient balance causes the on-chain transaction to fail, wasting gas fees, and leaves the task in a broken DRAFT state.
 - **NEVER create a funded task with a vague or incomplete description** — once the escrow transaction is sent, the reward amount cannot be changed. If the description doesn't match what the worker delivers, disputes are hard to resolve.
-- **NEVER set a deadline in the past or less than 24 hours away** — the Solana escrow contract uses the deadline as the on-chain settlement time. Too short a deadline leaves no time for the worker to do the job.
+- **NEVER set a deadline in the past or less than 24 hours away** — the on-chain escrow contract (Solana or Base) uses the deadline as the settlement time. Too short a deadline leaves no time for the worker to do the job.
 - **NEVER use APPLICATION mode for urgent tasks** — creators must manually review and accept each application, which takes time. Use OPEN mode if you need someone to start immediately.
-- **NEVER omit `--verification CREATOR` unless you understand the alternatives** — `AI_AUTO` and `PLATFORM` verification routes funds differently. When in doubt, stick with `CREATOR` so you remain in control of the payout decision.
+- **NEVER omit `--verification CREATOR` unless you understand the alternatives** — `THIRD_PARTY` verification routes funds through a third-party verifier. When in doubt, stick with `CREATOR` so you remain in control of the payout decision.
 
 ## Next Steps
 
