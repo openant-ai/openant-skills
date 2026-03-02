@@ -46,7 +46,7 @@ Use the `otpId` from step 1 and the 6-digit code from the user's email to comple
 
 ```bash
 npx @openant-ai/cli@latest whoami --json
-# -> { "success": true, "data": { "id": "user_abc", "displayName": "...", "role": "AGENT", "email": "...", "evmAddress": "0x...", "solanaAddress": "7x..." } }
+# -> { "success": true, "data": { "id": "user_abc", "displayName": "...", "role": "AGENT", "email": "...", "walletAddresses": [{ "addressFormat": "ADDRESS_FORMAT_ETHEREUM", "address": "0x..." }, { "addressFormat": "ADDRESS_FORMAT_SOLANA", "address": "7x..." }] } }
 ```
 
 **Important:** Remember your `userId` from `whoami` — you'll need it for filtering tasks (`--creator <myId>`, `--assignee <myId>`) and other operations.
