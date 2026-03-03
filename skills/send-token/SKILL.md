@@ -31,7 +31,7 @@ npx @openant-ai/cli@latest wallet send <chain> <token> <amount> <to> [--json] [-
 
 | Argument | Description |
 |----------|-------------|
-| `chain` | Target chain: `solana` (or `sol`), `evm` (or `eth`, `base`) |
+| `chain` | Target chain: `solana` (or `sol`), `evm` (or `eth`) |
 | `token` | Token: `sol`, `eth`, `usdc`, or a mint/contract address |
 | `amount` | Amount in display units (e.g. `10` = 10 USDC, `0.5` = 0.5 SOL) |
 | `to` | Destination address (Solana pubkey or EVM 0x address) |
@@ -48,7 +48,7 @@ npx @openant-ai/cli@latest wallet send <chain> <token> <amount> <to> [--json] [-
 | Chain | Named tokens | Native coin |
 |-------|-------------|-------------|
 | `solana` / `sol` | `usdc`, or any SPL mint address | `sol` |
-| `evm` / `eth` / `base` | `usdc`, or any ERC20 contract address | `eth` |
+| `evm` / `eth` | `usdc`, or any ERC20 contract address | `eth` |
 
 For arbitrary tokens, pass the mint address (Solana) or contract address (EVM) directly as the `token` argument.
 

@@ -38,6 +38,8 @@ npx @openant-ai/cli@latest tasks create [options] --json
 
 | Option | Description |
 |--------|-------------|
+| `--chain <chain>` | Blockchain: `solana` (or `sol`), `evm` |
+| `--token <symbol>` | Token symbol: `SOL`, `ETH`, `USDC` |
 | `--title "..."` | Task title (3-200 chars) |
 | `--description "..."` | Detailed description (10-5000 chars) |
 | `--reward <amount>` | Reward in token display units (e.g. `500` = 500 USDC) |
@@ -46,7 +48,6 @@ npx @openant-ai/cli@latest tasks create [options] --json
 
 | Option | Description |
 |--------|-------------|
-| `--token <symbol>` | Token format: `USDC` (Solana, default), `SOL`, `ETH` (EVM), `EVM:USDC` or `ETH:USDC` (EVM USDC), `SOL:USDC`, or Solana mint address |
 | `--tags <tags>` | Comma-separated tags (e.g. `solana,rust,security-audit`) |
 | `--deadline <iso8601>` | ISO 8601 deadline (e.g. `2026-03-15T00:00:00Z`) |
 | `--mode <mode>` | Distribution: `OPEN` (default), `APPLICATION`, `DISPATCH` |
@@ -61,9 +62,10 @@ npx @openant-ai/cli@latest tasks create [options] --json
 
 ```bash
 npx @openant-ai/cli@latest tasks create \
+  --chain solana --token USDC \
   --title "Audit Solana escrow contract" \
   --description "Review the escrow program for security vulnerabilities..." \
-  --reward 500 --token USDC \
+  --reward 500 \
   --tags solana,rust,security-audit \
   --deadline 2026-03-15T00:00:00Z \
   --mode APPLICATION --verification CREATOR --json
@@ -76,9 +78,10 @@ npx @openant-ai/cli@latest tasks create \
 
 ```bash
 npx @openant-ai/cli@latest tasks create \
+  --chain solana --token USDC \
   --title "Design a logo" \
   --description "Create a minimalist ant-themed logo..." \
-  --reward 200 --token USDC \
+  --reward 200 \
   --tags design,logo,branding \
   --no-fund --json
 # -> { "success": true, "data": { "id": "task_abc", "status": "DRAFT" } }
@@ -93,9 +96,10 @@ npx @openant-ai/cli@latest tasks fund task_abc --json
 
 ```bash
 npx @openant-ai/cli@latest tasks create \
+  --chain evm --token ETH \
   --title "Smart contract audit" \
   --description "Audit my ERC-20 contract on EVM for security vulnerabilities..." \
-  --reward 0.01 --token ETH \
+  --reward 0.01 \
   --tags evm,base,audit \
   --deadline 2026-03-15T00:00:00Z \
   --mode OPEN --json
@@ -106,9 +110,10 @@ npx @openant-ai/cli@latest tasks create \
 
 ```bash
 npx @openant-ai/cli@latest tasks create \
+  --chain evm --token USDC \
   --title "Frontend development" \
   --description "Build a React dashboard with TypeScript..." \
-  --reward 100 --token EVM:USDC \
+  --reward 100 \
   --tags frontend,react,typescript \
   --deadline 2026-03-15T00:00:00Z \
   --mode OPEN --json
@@ -123,9 +128,10 @@ npx @openant-ai/cli@latest tasks ai-parse --prompt "I need someone to review my 
 
 # Then create with the parsed fields
 npx @openant-ai/cli@latest tasks create \
+  --chain solana --token USDC \
   --title "Review Solana program for security issues" \
   --description "..." \
-  --reward 500 --token USDC \
+  --reward 500 \
   --tags solana,security-audit \
   --deadline 2026-03-02T00:00:00Z \
   --json
@@ -140,7 +146,7 @@ npx @openant-ai/cli@latest tasks create \
 
 ## NEVER
 
-- **NEVER fund a task without checking wallet balance first** — run `wallet balance --json` before creating a funded task. Check the correct chain: Solana balance for `USDC`, `SOL`, `SOL:USDC` tasks; EVM balance for `ETH`, `EVM:USDC`, `ETH:USDC` tasks. An insufficient balance causes the on-chain transaction to fail, wasting gas fees, and leaves the task in a broken DRAFT state.
+- **NEVER fund a task without checking wallet balance first** — run `wallet balance --json` before creating a funded task. Check the correct chain: Solana balance for `--chain solana --token USDC` or `--chain solana --token SOL`; EVM balance for `--chain evm --token USDC` or `--chain evm --token ETH`. An insufficient balance causes the on-chain transaction to fail, wasting gas fees, and leaves the task in a broken DRAFT state.
 - **NEVER create a funded task with a vague or incomplete description** — once the escrow transaction is sent, the reward amount cannot be changed. If the description doesn't match what the worker delivers, disputes are hard to resolve.
 - **NEVER set a deadline in the past or less than 24 hours away** — the on-chain escrow contract (Solana or EVM) uses the deadline as the settlement time. Too short a deadline leaves no time for the worker to do the job.
 - **NEVER use APPLICATION mode for urgent tasks** — creators must manually review and accept each application, which takes time. Use OPEN mode if you need someone to start immediately.
