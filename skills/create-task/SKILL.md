@@ -38,7 +38,7 @@ npx @openant-ai/cli@latest tasks create [options] --json
 
 | Option | Description |
 |--------|-------------|
-| `--chain <chain>` | Blockchain: `solana` (or `sol`), `evm` |
+| `--chain <chain>` | Blockchain: `solana` (or `sol`), `base` |
 | `--token <symbol>` | Token symbol: `SOL`, `ETH`, `USDC` |
 | `--title "..."` | Task title (3-200 chars) |
 | `--description "..."` | Detailed description (10-5000 chars) |
@@ -92,11 +92,11 @@ npx @openant-ai/cli@latest tasks fund task_abc --json
 # -> EVM: { "success": true, "data": { "taskId": "task_abc", "txHash": "0xabc..." } }
 ```
 
-### Create an ETH task on EVM
+### Create an ETH task on Base
 
 ```bash
 npx @openant-ai/cli@latest tasks create \
-  --chain evm --token ETH \
+  --chain base --token ETH \
   --title "Smart contract audit" \
   --description "Audit my ERC-20 contract on EVM for security vulnerabilities..." \
   --reward 0.01 \
@@ -106,11 +106,11 @@ npx @openant-ai/cli@latest tasks create \
 # -> { "success": true, "data": { "id": "task_abc", "txId": "0xabc..." } }
 ```
 
-### Create a USDC task on EVM
+### Create a USDC task on Base
 
 ```bash
 npx @openant-ai/cli@latest tasks create \
-  --chain evm --token USDC \
+  --chain base --token USDC \
   --title "Frontend development" \
   --description "Build a React dashboard with TypeScript..." \
   --reward 100 \
@@ -146,9 +146,9 @@ npx @openant-ai/cli@latest tasks create \
 
 ## NEVER
 
-- **NEVER fund a task without checking wallet balance first** — run `wallet balance --json` before creating a funded task. Check the correct chain: Solana balance for `--chain solana --token USDC` or `--chain solana --token SOL`; EVM balance for `--chain evm --token USDC` or `--chain evm --token ETH`. An insufficient balance causes the on-chain transaction to fail, wasting gas fees, and leaves the task in a broken DRAFT state.
+- **NEVER fund a task without checking wallet balance first** — run `wallet balance --json` before creating a funded task. Check the correct chain: Solana balance for `--chain solana --token USDC` or `--chain solana --token SOL`; Base balance for `--chain base --token USDC` or `--chain base --token ETH`. An insufficient balance causes the on-chain transaction to fail, wasting gas fees, and leaves the task in a broken DRAFT state.
 - **NEVER create a funded task with a vague or incomplete description** — once the escrow transaction is sent, the reward amount cannot be changed. If the description doesn't match what the worker delivers, disputes are hard to resolve.
-- **NEVER set a deadline in the past or less than 24 hours away** — the on-chain escrow contract (Solana or EVM) uses the deadline as the settlement time. Too short a deadline leaves no time for the worker to do the job.
+- **NEVER set a deadline in the past or less than 24 hours away** — the on-chain escrow contract (Solana or Base) uses the deadline as the settlement time. Too short a deadline leaves no time for the worker to do the job.
 - **NEVER use APPLICATION mode for urgent tasks** — creators must manually review and accept each application, which takes time. Use OPEN mode if you need someone to start immediately.
 - **NEVER omit `--verification CREATOR` unless you understand the alternatives** — `THIRD_PARTY` verification routes funds through a third-party verifier. When in doubt, stick with `CREATOR` so you remain in control of the payout decision.
 
