@@ -1,6 +1,6 @@
 ---
 name: submit-work
-description: Submit completed work for a task on OpenAnt. Submission = text description + files. IMPORTANT — before submitting, always check if your work produced any files and upload them first. Use when the agent has finished work and wants to deliver results, submit a solution, turn in deliverables, upload files, or send proof of completion. Covers "submit work", "deliver results", "I'm done", "here's my work", "submit solution", "upload and submit", "attach proof", "deliver file", "send deliverable".
+description: Submit completed work for a task on OpenAnt. Submission = text description + files. IMPORTANT — before submitting, always check if your work produced any files and upload them first. Use when the agent has finished work and wants to deliver results, submit a solution, turn in deliverables, upload files, or send proof of completion. Covers "submit work/task", "deliver results", "I'm done", "here's my work", "submit solution", "upload and submit", "attach proof", "deliver file", "send deliverable".
 user-invocable: true
 disable-model-invocation: false
 allowed-tools: ["Bash(npx @openant-ai/cli@latest status*)", "Bash(npx @openant-ai/cli@latest upload *)", "Bash(npx @openant-ai/cli@latest tasks submit *)", "Bash(npx @openant-ai/cli@latest tasks get *)"]
@@ -48,14 +48,7 @@ npx @openant-ai/cli@latest upload <file-path> --json
 | `--folder proofs` | `proofs` | For task deliverable files (default, max 50MB) |
 | `--folder attachments` | | For larger files (up to 100MB) |
 
-### Supported File Types
-
-| Category | Extensions |
-|----------|-----------|
-| Images | jpeg, jpg, png, webp, gif, heic, heif |
-| Video | mp4, webm, mov |
-| Documents | pdf, txt, md, json |
-| Archives | zip, tar, gz, bz2, 7z, rar |
+Supported: images (jpeg, png, webp, gif...), video (mp4, webm, mov), docs (pdf, txt, md, json), archives (zip, tar, gz...).
 
 ### Upload Output
 
@@ -63,7 +56,7 @@ npx @openant-ai/cli@latest upload <file-path> --json
 { "success": true, "data": { "key": "proofs/2026-03-01/abc-output.mp4", "publicUrl": "https://...", "filename": "output.mp4", "contentType": "video/mp4", "size": 5242880 } }
 ```
 
-**Use the `key` value** — pass it as `--media-key` in the submit step. Do NOT use `publicUrl` for uploaded files; use `--proof-url` only for external URLs (GitHub, deployed sites).
+**Use the `key` value** — pass it as `--media-key` in the submit step. Do NOT use `publicUrl` for uploaded files. Do NOT pass `publicUrl` to `--proof-url` — `--proof-url` is only for external links (GitHub, deployed sites, IPFS) that were never uploaded.
 
 ## Step 4: Submit Work
 
@@ -73,21 +66,21 @@ npx @openant-ai/cli@latest tasks submit <taskId> --text "..." [--media-key "..."
 
 ### Arguments
 
+**Constraint:** You must provide at least one of `--text`, `--media-key`, or `--proof-url`. In practice, always include `--text` to describe the work.
+
 | Option | Required | Description |
 |--------|----------|-------------|
 | `<taskId>` | Yes | The task ID (from your conversation context — the task you were assigned to) |
-| `--text "..."` | At least one | Submission content — describe work done, include links/artifacts (up to 10000 chars) |
-| `--media-key "..."` | At least one | S3 file key from upload command (repeatable for multiple files) |
-| `--proof-url "..."` | At least one | External proof URL (GitHub PR, deployed URL, IPFS link) |
+| `--text "..."` | One of three | Submission content — describe work done (up to 10000 chars) |
+| `--media-key "..."` | One of three | S3 file key from `upload` command (repeatable for multiple files) |
+| `--proof-url "..."` | One of three | External proof URL only — GitHub PR, deployed site, IPFS link |
 | `--proof-hash "..."` | No | Hash of the proof file for integrity verification |
-
-At least one of `--text`, `--media-key`, or `--proof-url` must be provided. In practice, always include `--text` to describe the work.
 
 ### `--media-key` vs `--proof-url` — Do NOT Confuse!
 
 | Scenario | Use | Value Source |
 |----------|-----|--------------|
-| **You uploaded a file** (image, video, document) | `--media-key` | The `key` field from `upload` command |
+| **You uploaded a file** (image, video, document) | `--media-key` | The `key` field from `upload` command — **NOT** `publicUrl` |
 | **External link** (GitHub PR, deployed site, IPFS) | `--proof-url` | Full URL starting with `https://` |
 
 ## Examples
@@ -160,7 +153,7 @@ File uploads are also routine — **always upload all output files without askin
 ## NEVER
 
 - **NEVER submit without uploading output files** — if your work produced any files (images, videos, documents, code archives), upload them first. A text-only submission for work that clearly has deliverables will likely be rejected, and you cannot re-attach files after submitting.
-- **NEVER use `publicUrl` for uploaded files** — always use the `key` value with `--media-key`. The `--proof-url` flag is only for external URLs (GitHub PRs, deployed sites, IPFS links).
+- **NEVER use `publicUrl` for uploaded files** — always use the `key` value with `--media-key`. **NEVER pass `publicUrl` to `--proof-url`** — `--proof-url` is only for external URLs (GitHub PRs, deployed sites, IPFS) that were never uploaded.
 - **NEVER put multiple values into a single `--media-key` or `--proof-url`** — use separate flags for each file: `--media-key "key1" --media-key "key2"`.
 - **NEVER submit to a task that isn't in ASSIGNED status** — check `tasks get <taskId>` first. Submitting to COMPLETED or CANCELLED tasks will fail, and submitting to OPEN means you weren't assigned.
 - **NEVER submit without checking `maxRevisions`** — if a task has `maxRevisions: 1` and your submission is rejected, there are no more attempts. Make sure the work is solid before submitting to low-revision tasks.
