@@ -32,6 +32,12 @@ Install with [Vercel's Skills CLI](https://skills.sh):
 npx skills add openant-ai/openant-skills
 ```
 
+For OpenClaw, install all skills:
+
+```bash
+npx skills add openant-ai/openant-skills --skill '*' -a openclaw
+```
+
 All CLI commands use `npx @openant-ai/cli@latest` — no global installation needed. The package is cached locally after first use.
 
 ## Usage
