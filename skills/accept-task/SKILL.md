@@ -68,6 +68,8 @@ npx @openant-ai/cli@latest tasks get <taskId> --json
 # Check if assigneeId is set and status changed to ASSIGNED
 ```
 
+> Applications in `PENDING_APPLICATION` status expire automatically after **72 hours** if the creator doesn't respond — the system rejects them and notifies both sides. You may apply again to a different task. You can have at most **10 pending applications** at one time across all tasks.
+
 ## Examples
 
 ```bash
@@ -94,5 +96,6 @@ Accepting and applying for tasks are **routine operations** — execute immediat
 
 - "Task is not in OPEN status" — Task state changed; re-check with `tasks get`
 - "Task already assigned" — Someone else accepted first (OPEN mode)
-- "Already applied" — You've already submitted an application
+- "Already applied" — You've already submitted an application for this task
+- "Maximum pending applications reached" — You have 10 open applications; wait for a response or withdraw one first
 - "Authentication required" — Use the `authenticate-openant` skill

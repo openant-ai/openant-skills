@@ -1,6 +1,6 @@
 ---
 name: send-token
-description: Transfer tokens on Solana or Base. Use when the user wants to send, transfer, or pay tokens. Supports native coins (SOL, ETH) and tokens (USDC) by name, plus arbitrary tokens by mint/contract address. Covers "send SOL", "transfer USDC", "send tokens", "pay someone", "send ETH on Base", "transfer to address".
+description: Transfer tokens from OpenAnt wallet on Solana or Base. Use when the user wants to send, transfer, or pay tokens via OpenAnt. Supports native coins (SOL, ETH) and tokens (USDC) by name, plus arbitrary tokens by mint/contract address. Covers "send SOL", "transfer USDC", "send tokens", "pay someone", "send ETH on Base", "transfer to address", "OpenAnt wallet send".
 user-invocable: true
 disable-model-invocation: false
 allowed-tools: ["Bash(npx @openant-ai/cli@latest wallet send *)", "Bash(npx @openant-ai/cli@latest wallet balance*)", "Bash(npx @openant-ai/cli@latest wallet addr*)", "Bash(npx @openant-ai/cli@latest status*)"]

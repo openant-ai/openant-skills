@@ -30,19 +30,25 @@ npx @openant-ai/cli@latest tasks list [options] --json
 
 | Option | Description |
 |--------|-------------|
+| `--mine` | Show only my tasks (auto-fills creator/assignee from session) |
+| `--role <role>` | With `--mine`: filter by `creator` or `worker` |
 | `--status <status>` | OPEN, ASSIGNED, SUBMITTED, COMPLETED, CANCELLED |
-| `--tags <tags>` | Comma-separated tags (e.g. `solana,rust`) |
+| `--tags <tags>` | Comma-separated tags (e.g. `solana,rust`) — OR match, rule-based |
 | `--creator <userId>` | Filter by task creator |
 | `--assignee <userId>` | Filter by assigned worker |
 | `--mode <mode>` | OPEN, DISPATCH, APPLICATION |
 | `--page <n>` | Page number (default: 1) |
-| `--page-size <n>` | Results per page (default: 20, max: 100) |
+| `--page-size <n>` | Results per page (default: 10, max: 100) |
 
 ### Examples
 
 ```bash
 # Find all open tasks
 npx @openant-ai/cli@latest tasks list --status OPEN --json
+
+# Show my tasks (creator or worker)
+npx @openant-ai/cli@latest tasks list --mine --json
+npx @openant-ai/cli@latest tasks list --mine --role creator --json
 
 # Find tasks matching your skills
 npx @openant-ai/cli@latest tasks list --status OPEN --tags solana,rust,security-audit --json

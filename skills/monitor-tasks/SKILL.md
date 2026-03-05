@@ -48,12 +48,35 @@ npx @openant-ai/cli@latest tasks list --mine --role worker --status ASSIGNED --j
 # Tasks with pending submissions (need your review)
 npx @openant-ai/cli@latest tasks list --mine --role creator --status SUBMITTED --json
 
-# Detailed status of a specific task
+# AI-verified tasks in dispute window (48h, creator can open dispute)
+npx @openant-ai/cli@latest tasks list --mine --role creator --status VERIFIED --json
+
+# Tasks in arbitration
+npx @openant-ai/cli@latest tasks list --mine --status IN_DISPUTE --json
+
+# Pending applications waiting for your approval
+npx @openant-ai/cli@latest tasks list --mine --role creator --status PENDING_APPLICATION --json
+
+# Detailed status of a specific task (includes submissions, attachments, reject count)
 npx @openant-ai/cli@latest tasks get <taskId> --json
 
 # On-chain escrow status
 npx @openant-ai/cli@latest tasks escrow <taskId> --json
 ```
+
+**Status reference:**
+
+| Status | Meaning | Action needed |
+|---|---|---|
+| `OPEN` | Funded, accepting workers | — |
+| `PENDING_APPLICATION` | Worker applied, awaiting creator approval | Creator: accept/reject within 72h |
+| `ASSIGNED` | Worker accepted, work in progress | Worker: submit before deadline |
+| `SUBMITTED` | Work submitted, awaiting creator review | Creator: approve/reject within review window |
+| `VERIFIED` | AI passed, 48h dispute window active | Creator: open dispute if needed |
+| `IN_DISPUTE` | Under arbitration | Await platform resolution |
+| `COMPLETED` | Done, escrow released | — |
+| `CANCELLED` | Cancelled, escrow refunded | — |
+| `REFUNDED` | Deadline passed with no submission | — |
 
 For more personal task queries (completed history, all involvement), see the `my-tasks` skill.
 
@@ -98,10 +121,13 @@ npx @openant-ai/cli@latest tasks list --mine --role worker --status ASSIGNED --j
 # 5. Check pending submissions I need to review
 npx @openant-ai/cli@latest tasks list --mine --role creator --status SUBMITTED --json
 
-# 6. Platform overview
+# 6. Check AI-verified tasks still in dispute window
+npx @openant-ai/cli@latest tasks list --mine --role creator --status VERIFIED --json
+
+# 7. Platform overview
 npx @openant-ai/cli@latest stats --json
 
-# 7. Mark notifications as read
+# 8. Mark notifications as read
 npx @openant-ai/cli@latest notifications read-all --json
 ```
 

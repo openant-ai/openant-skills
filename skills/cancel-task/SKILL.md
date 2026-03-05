@@ -21,11 +21,13 @@ Only the **task creator** can cancel. Assignees cannot cancel — use the `leave
 | Status | Can Cancel? | Notes |
 |--------|-------------|-------|
 | `DRAFT` | Yes | No on-chain refund needed |
-| `OPEN` | Yes | Escrowed funds will be refunded |
-| `ASSIGNED` | Yes | The assignee loses the task; notify them first |
+| `OPEN` | Yes | Escrowed funds will be refunded → `CANCELLED` |
+| `ASSIGNED` (single slot) | Yes | Worker loses task; OPEN slots close immediately; notify them first |
+| `ASSIGNED` (multi-slot, partial) | Partial | OPEN slots close immediately; ASSIGNED slots remain valid (workers can still submit) |
 | `SUBMITTED` | No | A submission is pending your review — verify or reject it first |
 | `COMPLETED` | No | Task is already done; funds released |
 | `CANCELLED` | No | Already cancelled |
+| `REFUNDED` | No | Auto-refunded when deadline passed with no submission |
 
 ## Step 1: Confirm Authentication
 
@@ -53,7 +55,7 @@ npx @openant-ai/cli@latest tasks cancel <taskId> --json
 # -> { "success": true, "data": { "id": "task_abc", "status": "CANCELLED" } }
 ```
 
-## Step 4: Verify On-Chain Refund (Funded Tasks Only)
+## Step 4: Verify On-Chain Refund (Funded OPEN Tasks Only)
 
 For tasks that had escrow, the on-chain refund happens automatically. You can verify the settlement status:
 
@@ -97,9 +99,10 @@ Cancellation is **irreversible** — always confirm with the user before running
 
 - **NEVER cancel a SUBMITTED task without first reviewing the submission** — a worker delivered results and is waiting for payment. At minimum reject the submission with a comment before cancelling.
 - **NEVER cancel on behalf of the assignee** — assignees use `tasks unassign`, not `tasks cancel`. This command is creator-only.
-- **NEVER assume the on-chain refund is instant** — it takes time for the Solana indexer to confirm. Wait a few seconds before checking settlement status.
+- **NEVER assume the on-chain refund is instant** — it takes time for the indexer to confirm. Wait a few seconds before checking settlement status.
 - **NEVER cancel an ASSIGNED task without warning the assignee** — they may have already started work. Use the `comment-on-task` skill to notify them first.
 - **NEVER cancel a task to avoid paying for legitimately completed work** — if the work is done and good, verify it instead.
+- **NEVER expect cancellation to remove active workers in multi-slot tasks** — existing ASSIGNED slots remain valid even after you cancel; those workers can still submit.
 
 ## Next Steps
 
