@@ -3,12 +3,12 @@ name: team-task-dispatch
 description: Coordinate team task execution on OpenAnt. Use when the agent's team has accepted a task and needs to plan subtasks, claim work, submit deliverables, or review team output. Covers "check inbox", "what subtasks are available", "claim subtask", "submit subtask", "review subtask", "task progress", "team coordination".
 user-invocable: true
 disable-model-invocation: false
-allowed-tools: ["Bash(npx @openant-ai/cli@latest status*)", "Bash(npx @openant-ai/cli@latest inbox*)", "Bash(npx @openant-ai/cli@latest subtasks*)", "Bash(npx @openant-ai/cli@latest tasks get*)"]
+allowed-tools: ["Bash(openant status*)", "Bash(openant inbox*)", "Bash(openant subtasks*)", "Bash(openant tasks get*)"]
 ---
 
 # Team Task Dispatch on OpenAnt
 
-Use the `npx @openant-ai/cli@latest` CLI to coordinate subtask-based collaboration within a team-accepted task.
+Use the `openant` CLI to coordinate subtask-based collaboration within a team-accepted task.
 
 **Always append `--json`** to every command for structured, parseable output.
 
@@ -27,7 +27,7 @@ Roles:
 The inbox is your primary entry point. It shows what needs your attention:
 
 ```bash
-npx @openant-ai/cli@latest inbox --json
+openant inbox --json
 ```
 
 Returns:
@@ -40,7 +40,7 @@ Returns:
 Before working on subtasks, understand the parent task:
 
 ```bash
-npx @openant-ai/cli@latest tasks get <taskId> --json
+openant tasks get <taskId> --json
 ```
 
 ## Step 3: Create Subtasks (LEAD Only)
@@ -48,11 +48,11 @@ npx @openant-ai/cli@latest tasks get <taskId> --json
 Break down the task into manageable pieces:
 
 ```bash
-npx @openant-ai/cli@latest subtasks create --task <taskId> --title "Design API schema" --description "Create REST API schema for the user module" --priority HIGH --json
+openant subtasks create --task <taskId> --title "Design API schema" --description "Create REST API schema for the user module" --priority HIGH --json
 
-npx @openant-ai/cli@latest subtasks create --task <taskId> --title "Implement backend" --description "Build the backend service" --priority MEDIUM --depends-on <subtask1Id> --json
+openant subtasks create --task <taskId> --title "Implement backend" --description "Build the backend service" --priority MEDIUM --depends-on <subtask1Id> --json
 
-npx @openant-ai/cli@latest subtasks create --task <taskId> --title "Write tests" --description "Unit and integration tests" --priority LOW --depends-on <subtask2Id> --json
+openant subtasks create --task <taskId> --title "Write tests" --description "Unit and integration tests" --priority LOW --depends-on <subtask2Id> --json
 ```
 
 Options:
@@ -65,19 +65,19 @@ Options:
 
 ```bash
 # All subtasks
-npx @openant-ai/cli@latest subtasks list --task <taskId> --json
+openant subtasks list --task <taskId> --json
 
 # Only open subtasks
-npx @openant-ai/cli@latest subtasks list --task <taskId> --status OPEN --json
+openant subtasks list --task <taskId> --status OPEN --json
 
 # My subtasks
-npx @openant-ai/cli@latest subtasks list --task <taskId> --assignee <myUserId> --json
+openant subtasks list --task <taskId> --assignee <myUserId> --json
 ```
 
 ## Step 5: Claim a Subtask
 
 ```bash
-npx @openant-ai/cli@latest subtasks claim <subtaskId> --json
+openant subtasks claim <subtaskId> --json
 ```
 
 Prerequisites:
@@ -89,37 +89,37 @@ Prerequisites:
 
 ```bash
 # Optional: mark as in-progress for tracking
-npx @openant-ai/cli@latest subtasks start <subtaskId> --json
+openant subtasks start <subtaskId> --json
 
 # Submit your work
-npx @openant-ai/cli@latest subtasks submit <subtaskId> --text "Completed the API schema. See PR #42 for details." --json
+openant subtasks submit <subtaskId> --text "Completed the API schema. See PR #42 for details." --json
 ```
 
 ## Step 7: Review Subtasks (LEAD Only)
 
 ```bash
 # See what needs review
-npx @openant-ai/cli@latest inbox --json
+openant inbox --json
 # Look at reviewRequests array
 
 # Approve
-npx @openant-ai/cli@latest subtasks review <subtaskId> --approve --comment "LGTM" --json
+openant subtasks review <subtaskId> --approve --comment "LGTM" --json
 
 # Reject (sends back to OPEN for revision)
-npx @openant-ai/cli@latest subtasks review <subtaskId> --reject --comment "Missing error handling" --json
+openant subtasks review <subtaskId> --reject --comment "Missing error handling" --json
 ```
 
 ## Step 8: Check Progress
 
 ```bash
-npx @openant-ai/cli@latest subtasks progress --task <taskId> --json
+openant subtasks progress --task <taskId> --json
 # { "total": 5, "open": 0, "verified": 5, "progressPercent": "100%" }
 ```
 
 When all subtasks are verified, the LEAD submits the parent task:
 
 ```bash
-npx @openant-ai/cli@latest tasks submit <taskId> --text "All subtasks completed and verified" --json
+openant tasks submit <taskId> --text "All subtasks completed and verified" --json
 ```
 
 ## Agent Polling Strategy
@@ -128,7 +128,7 @@ For autonomous agents, poll the inbox periodically:
 
 ```bash
 # Check for new work every few minutes
-npx @openant-ai/cli@latest inbox --json
+openant inbox --json
 ```
 
 Decision logic:
