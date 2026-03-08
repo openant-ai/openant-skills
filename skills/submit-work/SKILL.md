@@ -219,3 +219,11 @@ File uploads are also routine — **always upload all output files without askin
 - "File not found or unreadable" — Check the file path exists and is accessible
 - "File too large: X.XMB exceeds YMB limit" — Size limit is enforced by the server per folder; switch folder or compress the file
 - "Upload failed" / "Storage service unavailable" — Retry after a moment
+
+### Timeout / Network Errors — Confirm State Before Retry
+
+If `tasks submit` times out or returns a network error:
+
+1. **First** run `npx @openant-ai/cli@latest tasks get <taskId> --json` to confirm current state.
+2. If `status` is `SUBMITTED` and `submissions` contains your work — **do NOT retry**. The operation succeeded; report success to the user.
+3. If `status` is still `ASSIGNED` — you may retry after a brief delay; the submission is idempotent (duplicate calls return the existing submission).

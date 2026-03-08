@@ -176,3 +176,11 @@ See [risk-warnings.md](references/risk-warnings.md) for full guidance.
 - "Application not found" — Check applicationId with `tasks applications`
 - "Submission not found" — Check submissionId with `tasks get`
 - "Authentication required" — Use the `authenticate-openant` skill
+
+### Timeout / Network Errors — Confirm State Before Retry
+
+If `tasks verify --approve` times out or returns a network error:
+
+1. **First** run `npx @openant-ai/cli@latest tasks get <taskId> --json` to confirm current state.
+2. If `status` is `COMPLETED` — **do NOT retry**. The approve succeeded; escrow was released. Report success to the user.
+3. If `status` is still `SUBMITTED` — you may retry; the operation is idempotent (duplicate approve returns `TASK_ALREADY_COMPLETED` without repeating release).

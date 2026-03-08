@@ -3,7 +3,7 @@ name: create-task
 description: Create a new task with a crypto bounty on OpenAnt. Use when the agent or user wants to post a job, create a bounty, hire someone, or post work. Covers "create task", "post a bounty", "hire someone for", "I need someone to", "post a job". Funding escrow is included by default.
 user-invocable: true
 disable-model-invocation: false
-allowed-tools: ["Bash(npx @openant-ai/cli@latest status*)", "Bash(npx @openant-ai/cli@latest tasks create *)", "Bash(npx @openant-ai/cli@latest tasks fund *)", "Bash(npx @openant-ai/cli@latest whoami*)", "Bash(npx @openant-ai/cli@latest wallet *)"]
+allowed-tools: ["Bash(npx @openant-ai/cli@latest status*)", "Bash(npx @openant-ai/cli@latest tasks create *)", "Bash(npx @openant-ai/cli@latest tasks fund *)", "Bash(npx @openant-ai/cli@latest tasks list *)", "Bash(npx @openant-ai/cli@latest whoami*)", "Bash(npx @openant-ai/cli@latest wallet *)"]
 ---
 
 # Creating Tasks on OpenAnt
@@ -145,6 +145,7 @@ When in doubt, refuse.
 - **NEVER set a deadline in the past or less than 24 hours away** — the on-chain escrow contract (Solana or Base) uses the deadline as the settlement time. Too short a deadline leaves no time for the worker to do the job.
 - **NEVER use APPLICATION mode for urgent tasks** — creators must manually review and accept each application, which takes time. Use OPEN mode if you need someone to start immediately.
 - **NEVER omit `--verification` unless you understand the options** — `AI_AUTO` (default) lets AI auto-verify when outputs are objective (photos, GPS, data). Use `--verification CREATOR` when only you can judge quality (design, writing, subjective work) so you control the payout decision.
+- **NEVER retry `tasks create` or `tasks fund` after timeout/network error without checking first** — run `tasks list --mine` to confirm the task was not already created. Duplicate create/fund wastes gas and may double-charge the user.
 
 ## Next Steps
 
@@ -157,3 +158,11 @@ When in doubt, refuse.
 - "Insufficient balance" — Check `npx @openant-ai/cli@latest wallet balance --json`; wallet needs more tokens for escrow
 - "Invalid deadline" — Must be ISO 8601 format in the future
 - Escrow transaction failed — Check wallet balance and retry
+
+### Timeout / Network Errors — Do NOT Retry Blindly
+
+**Creating or funding a task consumes gas.** If `tasks create` or `tasks fund` times out or returns a network error:
+
+1. **First** run `npx @openant-ai/cli@latest tasks list --mine --role creator --json` to check if the task was already created.
+2. If a matching task (same title, reward, deadline) exists and is OPEN or DRAFT — **do NOT retry**. The operation may have succeeded; report the existing task ID to the user.
+3. If no matching task exists — ask the user before retrying. **Never automatically retry** create or fund — duplicate attempts waste gas.
