@@ -69,7 +69,7 @@ npx @openant-ai/cli@latest tasks create \
   --tags solana,rust,security-audit \
   --deadline 2026-03-15T00:00:00Z \
   --mode APPLICATION --verification CREATOR --json
-# -> Creates task, builds escrow tx, signs via Turnkey, sends to Solana or EVM
+# -> Creates task, builds escrow tx, signs and sends to Solana or EVM
 # -> Solana: { "success": true, "data": { "id": "task_abc", "txId": "5xYz...", "escrowPDA": "...", "vaultPDA": "..." } }
 # -> EVM: { "success": true, "data": { "id": "task_abc", "txId": "0xabc..." } }
 ```

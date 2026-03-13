@@ -132,7 +132,7 @@ Read-only commands (`status`, `wallet balance`, `wallet addresses`) can be execu
 
 ## Error Handling
 
-- "No Turnkey credentials found" — Run `authenticate-openant` skill first
+- "No credentials found" — Run `authenticate-openant` skill first
 - "Insufficient balance" / "Attempt to debit" — Wallet lacks funds; check `wallet balance`
 - "Unknown chain" — Supported: `sol`, `base`, `eth`
 - "No Base wallet found" / "No Solana wallet found" — Re-login to provision wallets
