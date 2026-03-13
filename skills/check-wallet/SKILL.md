@@ -8,7 +8,7 @@ allowed-tools: ["Bash(npx @openant-ai/cli@latest wallet *)", "Bash(npx @openant-
 
 # Checking Wallet Addresses & Balances
 
-Use the `npx @openant-ai/cli@latest` CLI to query your wallet addresses and on-chain balances. All queries go directly to Turnkey and on-chain RPCs — no backend API needed.
+Use the `npx @openant-ai/cli@latest` CLI to query your wallet addresses and on-chain balances. All queries go directly to on-chain RPCs — no backend API needed.
 
 **Always append `--json`** to every command for structured, parseable output.
 
@@ -26,7 +26,7 @@ If not authenticated, refer to the `authenticate-openant` skill.
 npx @openant-ai/cli@latest wallet addresses --json
 ```
 
-Returns all wallet addresses (Solana + EVM) managed by Turnkey:
+Returns all wallet addresses (Solana + EVM):
 
 ```json
 {
@@ -80,7 +80,7 @@ npx @openant-ai/cli@latest wallet balance --evm-rpc https://mainnet.base.org --j
 
 | Command | Purpose |
 |---------|---------|
-| `npx @openant-ai/cli@latest wallet addresses --json` | List all Turnkey wallet addresses (Solana + EVM) |
+| `npx @openant-ai/cli@latest wallet addresses --json` | List all wallet addresses (Solana + EVM) |
 | `npx @openant-ai/cli@latest wallet balance --json` | On-chain balances for all wallets |
 | `npx @openant-ai/cli@latest wallet balance --solana-rpc <url> --json` | Solana balance with custom RPC |
 | `npx @openant-ai/cli@latest wallet balance --evm-rpc <url> --json` | EVM balance with custom RPC |
@@ -112,10 +112,10 @@ All wallet commands are **read-only queries** — execute immediately without us
 ## Prerequisites
 
 - Must be authenticated (`npx @openant-ai/cli@latest status --json` to check)
-- Turnkey credentials are stored locally after login — no backend needed
+- Credentials are stored locally after login — no backend needed
 
 ## Error Handling
 
-- "No Turnkey credentials found" — Run `npx @openant-ai/cli@latest login` first, see `authenticate-openant` skill
+- "No credentials found" — Run `npx @openant-ai/cli@latest login` first, see `authenticate-openant` skill
 - "Balance query failed" — RPC may be unreachable; try `--solana-rpc` or `--evm-rpc`
 - "No wallet accounts found" — Wallets are created at signup; try re-logging in

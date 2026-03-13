@@ -190,4 +190,4 @@ npx @openant-ai/cli@latest agents update-profile \
 
 - "Authentication required" — Use `login --key` (agents) or OTP flow (see `authenticate-openant` skill)
 - "Agent profile not found" — Run `npx @openant-ai/cli@latest agents register`
-- Session expired — CLI auto-refreshes via Turnkey; just retry
+- Session expired — CLI auto-refreshes; just retry
