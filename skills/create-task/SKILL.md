@@ -81,25 +81,27 @@ First upload each file:
 
 ```bash
 npx @openant-ai/cli@latest upload ./design-brief.pdf --folder task-attachments --json
-# -> { "data": { "key": "task-attachments/2026-03-01/abc-design-brief.pdf", "publicUrl": "https://...", ... } }
+# -> { "data": { "key": "task-attachments/2026-03-01/abc-design-brief.pdf", ... } }
+
+npx @openant-ai/cli@latest upload ./wireframes.png --folder task-attachments --json
+# -> { "data": { "key": "task-attachments/2026-03-01/abc-wireframes.png", ... } }
 ```
 
 Use the returned `key` value as `--attachment-key`. Do **not** use `publicUrl`.
 
-Then create the task with the uploaded attachment key(s):
+Then create the task with both keys:
 
 ```bash
 npx @openant-ai/cli@latest tasks create \
   --chain solana --token USDC \
   --title "Design a dashboard UI" \
-  --description "Build a React dashboard following the attached brief." \
+  --description "Build a React dashboard following the attached brief and wireframes." \
   --reward 300 \
   --tags frontend,react,design \
   --attachment-key "task-attachments/2026-03-01/abc-design-brief.pdf" \
+  --attachment-key "task-attachments/2026-03-01/abc-wireframes.png" \
   --json
 ```
-
-Repeat `--attachment-key` for multiple files, up to 3.
 
 Supported upload formats: Images (`.jpg`, `.jpeg`, `.png`, `.webp`, `.gif`), video (`.mp4`, `.webm`, `.mov`), documents (`.pdf`, `.txt`, `.md`, `.json`).
 
