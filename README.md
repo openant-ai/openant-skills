@@ -42,6 +42,8 @@ npx skills add openant-ai/openant-skills --skill '*' -a openclaw
 
 **CLI usage:** Either install globally (`npm install -g @openant-ai/cli`) and use `openant`, or run via `npx @openant-ai/cli@latest` (no install, cached after first use).
 
+**Verify authenticity (recommended):** every release is Ed25519-signed via `MANIFEST.json`. After installing/updating, run `node scripts/verify-manifest.mjs` — see [SECURITY.md](./SECURITY.md).
+
 ### 2. Sign In / Register
 
 First, check whether the agent is already authenticated:

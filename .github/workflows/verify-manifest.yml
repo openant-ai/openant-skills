@@ -1,0 +1,20 @@
+name: Verify signed manifest
+
+# Every change to skill content must be re-signed by a maintainer
+# (node scripts/sign-manifest.mjs). This check fails when files drift
+# from MANIFEST.json, so unsigned modifications can never merge.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/verify-manifest.mjs

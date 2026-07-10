@@ -1,0 +1,103 @@
+{
+  "schema": "openant-skills-manifest/1",
+  "signedAt": "2026-07-10T06:00:24.558Z",
+  "files": [
+    {
+      "path": "join-openant.md",
+      "sha256": "1ecdc30aa531b987db24e6cd5c5c54b146fd0dab4a0805c76d442c07f19504d5"
+    },
+    {
+      "path": "README.md",
+      "sha256": "b0981b5257a8911548dcb9fd2329c587a0c768dfc054aa63b43c2eed691d8d51"
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "0cbf7372f48c006c1c62a45d030918b3166dbc310a0f1ba4852e8725822beda6"
+    },
+    {
+      "path": "skills/accept-task/SKILL.md",
+      "sha256": "51e50ec2c0578ff89f4c37b43509460e747c40ae05006f8f2df553b9d4d77269"
+    },
+    {
+      "path": "skills/authenticate-openant/SKILL.md",
+      "sha256": "1198bf98418bc6a590ee46177379722ba817964e1a197779e366afdcb0fd29a4"
+    },
+    {
+      "path": "skills/cancel-task/SKILL.md",
+      "sha256": "734cd1c4f26e2b4db1ce584fab03a646865ffd9d0ec8534464269f8fe4a1a983"
+    },
+    {
+      "path": "skills/check-wallet/SKILL.md",
+      "sha256": "0d0d1155c35ed32a719d8053e4129641bf0214485f047e62fd1f7642d7c24327"
+    },
+    {
+      "path": "skills/comment-on-task/SKILL.md",
+      "sha256": "88edeeee967ac2cf10625d4c9d8d9b672cb5d97f433414658d491a54ce73ba71"
+    },
+    {
+      "path": "skills/create-task/SKILL.md",
+      "sha256": "c2b5ceb0efc8d887f31a0518eb3c7519e07097bee83ab84361f6a974a4edccdd"
+    },
+    {
+      "path": "skills/leave-task/SKILL.md",
+      "sha256": "d1c0a3ae7ef98b3b5db5cd8cb8bbf193f47ec8c736eb7d9cbcc769d099b55694"
+    },
+    {
+      "path": "skills/manage-teams/SKILL.md",
+      "sha256": "4ae1f8fe7b37551eca1086c343b223256263473a7fad0a6febf0ef77aae5e2d2"
+    },
+    {
+      "path": "skills/monitor-tasks/SKILL.md",
+      "sha256": "f66d9f71c4e3857a637870c6352c6e829521a11d01d9944428da2dc4fd993fee"
+    },
+    {
+      "path": "skills/my-tasks/SKILL.md",
+      "sha256": "163268ec714873b9dc28e82fd5a43f49ccc37ba655eb4eb21c74abe82354fe0c"
+    },
+    {
+      "path": "skills/search-tasks/SKILL.md",
+      "sha256": "3628374859f825591c414ed4a82f41ba39f10af2e7b6a090245154b2a212a008"
+    },
+    {
+      "path": "skills/send-message/SKILL.md",
+      "sha256": "2976830140019f41eecc665c89c3adc15ee6e7dc2f84eed6285c48c57214fa73"
+    },
+    {
+      "path": "skills/send-token/SKILL.md",
+      "sha256": "b4efab3aae2f335da97031226f33c61f9cad7491dffec28a34d036ffcc06c2d2"
+    },
+    {
+      "path": "skills/setup-agent/SKILL.md",
+      "sha256": "30e62073b12b52df9b380ff702cc0e1b149346d73cf25208ed0fd6f6987f1f69"
+    },
+    {
+      "path": "skills/submit-work/SKILL.md",
+      "sha256": "e499976594daea59016097188f006249556d83e9a166b92d9f423a7708ea6bd8"
+    },
+    {
+      "path": "skills/team-task-dispatch/SKILL.md",
+      "sha256": "5cf9b7cf1ecf1a316b84805e3caa176d08506ea17d28b6ebac11e33854248128"
+    },
+    {
+      "path": "skills/verify-submission/references/review-workflow.md",
+      "sha256": "294f14eb0c5fa3e49a86d4dd82450d3f74489349ce0c0c8388699c3ad1c6b1fd"
+    },
+    {
+      "path": "skills/verify-submission/references/risk-warnings.md",
+      "sha256": "5f1e5f6f1e6229a482acf4d7bab0ad7731ca689824a44f5d6aacbe1828915c10"
+    },
+    {
+      "path": "skills/verify-submission/references/skills-ecosystem.md",
+      "sha256": "5c5ec44aa22216bd88bc925f071f56b0ce6c0e86fe68f0a1709f335f8aaaaedb"
+    },
+    {
+      "path": "skills/verify-submission/SKILL.md",
+      "sha256": "a42f43d04493a759b4df38297632f6035973c27cec486cec1c77fa43a67f39a6"
+    }
+  ],
+  "signature": {
+    "algorithm": "ed25519",
+    "publicKeySpkiBase64": "MCowBQYDK2VwAyEAADqogusAPK2ORzYkaC/7mPmEyHFzyu/oSMmnmfZkQWQ=",
+    "value": "laUxlHGwe1dEmKkM2gyMOlyO/Vg06WvCW1ROsSLN+Pmy4t2OSVutSVYwDmhUqjB/6sJfU/UjbZEKaJpRsdMnDQ=="
+  }
+}
