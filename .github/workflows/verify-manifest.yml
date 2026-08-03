@@ -11,7 +11,8 @@ on:
 
 jobs:
   verify:
-    runs-on: ${{ fromJSON(vars.CI_RUNNER_LABELS || '["self-hosted","linux","x64","oci","shared-ci"]') }}
+    # Public repositories must not execute untrusted fork code on the shared host.
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
