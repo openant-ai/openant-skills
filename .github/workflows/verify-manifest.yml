@@ -11,7 +11,7 @@ on:
 
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.CI_RUNNER_LABELS || '["self-hosted","linux","x64","oci","shared-ci"]') }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
